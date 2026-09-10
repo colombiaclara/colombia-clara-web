@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0",
+  "id": "tiempo",
+  "title": "Evolución simulada",
+  "columns": [
+    {
+      "id": "fecha",
+      "label": "Mes",
+      "type": "date"
+    },
+    {
+      "id": "primera",
+      "label": "Primera",
+      "type": "number",
+      "unit": "unidades"
+    },
+    {
+      "id": "segunda",
+      "label": "Segunda",
+      "type": "number",
+      "unit": "unidades"
+    }
+  ],
+  "rows": [
+    {
+      "fecha": "2026-01-01",
+      "primera": 40,
+      "segunda": 30
+    },
+    {
+      "fecha": "2026-02-01",
+      "primera": null,
+      "segunda": 45
+    },
+    {
+      "fecha": "2026-03-01",
+      "primera": 55,
+      "segunda": 38
+    },
+    {
+      "fecha": "2026-04-01",
+      "primera": 75,
+      "segunda": 64
+    }
+  ],
+  "citations": [
+    {
+      "sourceId": "src-demo-recuento",
+      "locator": {
+        "type": "table",
+        "value": "Recuento simulado"
+      }
+    }
+  ],
+  "methodology": "Serie temporal sintética creada para probar fechas, ceros y valores ausentes. Las observaciones son valores elegidos para el ejercicio; no hay interpolación ni estimación.",
+  "period": "Ejercicio sin periodo real"
+}

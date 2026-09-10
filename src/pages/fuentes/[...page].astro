@@ -1,0 +1,66 @@
+---
+import Layout from '../../components/Layout.astro';
+import { model } from '../../build/get-model';
+import { Search } from '../../lib/search/Search';
+import { SourceCard } from '../../lib/sources/SourceCard';
+import { EmptyState } from '../../lib/ui/EmptyState';
+import { Pagination } from '../../lib/layout/Pagination';
+import { Breadcrumbs } from '../../lib/layout/Breadcrumbs';
+
+export function getStaticPaths() {
+  const count = Object.values(model.sources).sort((a, b) =>
+    a.title.localeCompare(b.title, 'es'),
+  ).length;
+  const pages = Math.max(1, Math.ceil(count / 8));
+  const result = [];
+  for (let i = 1; i <= pages; i++) {
+    const page = i === 1 ? undefined : 'pagina/' + i;
+    result.push({ params: { page }, props: { currentPage: i, pages } });
+  }
+  return result;
+}
+const { currentPage, pages } = Astro.props;
+const all = Object.values(model.sources).sort((a, b) => a.title.localeCompare(b.title, 'es'));
+const rows = all.slice((currentPage - 1) * 8, currentPage * 8);
+const links = Array.from({ length: pages }, (_, i) => ({
+  label: String(i + 1),
+  href: model.base + 'fuentes/' + (i === 0 ? '' : 'pagina/' + (i + 1) + '/'),
+}));
+---
+
+<Layout
+  title="El rastro de lo publicado"
+  description="Documentos, datos y testimonios utilizados en nuestras publicaciones."
+  ><Breadcrumbs items={[{ label: 'Inicio', href: model.base }, { label: 'Fuentes' }]} /><header
+    class="listing-header"
+  >
+    <p class="kicker">Fuentes</p><h1>El rastro de lo publicado</h1><p class="lead">
+      Documentos, datos y testimonios utilizados en nuestras publicaciones.
+    </p>
+  </header><section class="search-container">
+    <Search indexUrl={model.base + 'search/sources.json'} kind="sources" client:load /><noscript
+      ><p>
+        La búsqueda interactiva requiere JavaScript. Puedes recorrer este índice y abrir cada ficha.
+      </p></noscript
+    ><div class="static-index">
+      {
+        rows.length ? (
+          <div class="source-grid">
+            {rows.map((s) => (
+              <SourceCard
+                source={s}
+                base={model.base}
+                count={model.uses[s.id].filter((u) => !u.institutional).length}
+              />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="Las fuentes llegarán con las publicaciones"
+            description="Cada fuente aparecerá aquí cuando se utilice en una publicación o página pública."
+          />
+        )
+      }<Pagination page={currentPage} pages={pages} links={links} />
+    </div>
+  </section></Layout
+>

@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "1.0",
+  "id": "page-metodologia",
+  "slug": "metodologia",
+  "status": "published",
+  "title": "La evidencia, a la vista",
+  "description": "Los principios de trabajo, revisión y corrección de Colombia Clara.",
+  "publishedAt": "2026-09-09",
+  "blocks": [
+    {
+      "id": "metodo-inicial",
+      "type": "paragraph",
+      "evidence": "transition",
+      "content": "Este es el método de trabajo que nos proponemos aplicar a cada publicación. La evidencia debe acompañar la lectura, y sus límites deben ser tan visibles como las conclusiones."
+    },
+    {
+      "id": "preguntas",
+      "type": "heading",
+      "level": 2,
+      "content": "Empezar por una pregunta comprobable"
+    },
+    {
+      "id": "delimitar",
+      "type": "paragraph",
+      "evidence": "transition",
+      "content": "Definimos qué queremos saber, a quién afecta y qué documentos o datos permitirían responder. Separaremos los hechos documentados, las declaraciones atribuidas y nuestro análisis."
+    },
+    {
+      "id": "rastro",
+      "type": "heading",
+      "level": 2,
+      "content": "Mostrar de dónde sale la información"
+    },
+    {
+      "id": "citar",
+      "type": "paragraph",
+      "evidence": "transition",
+      "content": "Citaremos el documento concreto y, cuando corresponda, su página, tabla o sección. Desde una publicación podrás acceder a sus fuentes y desde cada fuente volver a los lugares donde se utiliza."
+    },
+    {
+      "id": "limites-datos",
+      "type": "heading",
+      "level": 2,
+      "content": "Comparar con contexto"
+    },
+    {
+      "id": "comparaciones",
+      "type": "paragraph",
+      "evidence": "transition",
+      "content": "Al comparar cifras, explicaremos las unidades, el periodo y la población a la que se refieren. Los datos ausentes no se tratarán como ceros. Una relación entre variables no bastará para afirmar causalidad."
+    },
+    {
+      "id": "revision",
+      "type": "methodology",
+      "title": "Revisión editorial",
+      "content": "Antes de publicar, una persona debe revisar las afirmaciones, contrastar sus referencias, comprobar las cifras y evaluar posibles daños. Una validación técnica no puede determinar que una historia sea verdadera."
+    },
+    {
+      "id": "corregir",
+      "type": "heading",
+      "level": 2,
+      "content": "Corregir de forma visible"
+    },
+    {
+      "id": "correcciones-visibles",
+      "type": "paragraph",
+      "evidence": "transition",
+      "content": "Cuando una corrección cambie información sustancial, dejaremos constancia de la fecha, el cambio y los apartados afectados. No reemplazaremos silenciosamente una conclusión por otra."
+    },
+    {
+      "id": "alcance-inicio",
+      "type": "context",
+      "tone": "context",
+      "title": "Un proyecto en construcción",
+      "content": "Estas pautas expresan nuestros compromisos de trabajo. Las primeras publicaciones se incorporarán después de su revisión editorial."
+    }
+  ]
+}

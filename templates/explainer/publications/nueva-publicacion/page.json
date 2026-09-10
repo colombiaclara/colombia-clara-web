@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "1.0",
+  "status": "draft",
+  "authors": ["autor-por-definir"],
+  "tags": [],
+  "id": "pub-nueva-publicacion",
+  "slug": "nueva-publicacion",
+  "section": "datos-claros",
+  "type": "explainer",
+  "title": "Título de la nueva publicación",
+  "description": "Resume el contenido que vas a desarrollar.",
+  "lead": {
+    "content": "Escribe aquí la entradilla y añade referencias para las afirmaciones factuales."
+  },
+  "blocks": [
+    {
+      "id": "pregunta-central",
+      "type": "heading",
+      "level": 2,
+      "content": "¿Cuál es la pregunta?"
+    },
+    {
+      "id": "contexto-inicial",
+      "type": "paragraph",
+      "evidence": "transition",
+      "content": "Explica el asunto y por qué necesita contexto."
+    },
+    {
+      "id": "evidencia-disponible",
+      "type": "heading",
+      "level": 2,
+      "content": "Qué sabemos"
+    },
+    {
+      "id": "explicacion-documentada",
+      "type": "paragraph",
+      "evidence": "fact",
+      "content": "Sustituye este texto por una explicación respaldada por la fuente.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    },
+    {
+      "id": "limites-conocimiento",
+      "type": "heading",
+      "level": 2,
+      "content": "Qué falta por saber"
+    },
+    {
+      "id": "incertidumbre",
+      "type": "paragraph",
+      "evidence": "transition",
+      "content": "Explica las preguntas pendientes y los límites de la evidencia."
+    },
+    {
+      "id": "metodo-editorial",
+      "type": "methodology",
+      "title": "Cómo se elaboró esta publicación",
+      "content": "Describe las fuentes revisadas y el criterio para seleccionarlas.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+---
+import Layout from '../../components/Layout.astro';
+import { model } from '../../build/get-model';
+import { SourceDetails } from '../../lib/sources/SourceDetails';
+import { SourcePublicationLinks } from '../../lib/sources/SourcePublicationLinks';
+import { Breadcrumbs } from '../../lib/layout/Breadcrumbs';
+export function getStaticPaths() {
+  return Object.values(model.sources).map((source) => ({
+    params: { source: source.id },
+    props: { source },
+  }));
+}
+const { source } = Astro.props;
+---
+
+<Layout title={source.title} description={source.description}
+  ><Breadcrumbs
+    items={[
+      { label: 'Inicio', href: model.base },
+      { label: 'Fuentes', href: model.base + 'fuentes/' },
+      { label: 'Ficha de fuente' },
+    ]}
+  /><div class="source-page">
+    <SourceDetails source={source} asset={model.sourceAssets[source.id]} /><SourcePublicationLinks
+      uses={model.uses[source.id]}
+    />
+  </div></Layout
+>

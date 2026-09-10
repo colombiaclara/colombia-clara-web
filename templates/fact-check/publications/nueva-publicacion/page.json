@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0",
+  "status": "draft",
+  "authors": ["autor-por-definir"],
+  "tags": [],
+  "id": "pub-nueva-publicacion",
+  "slug": "nueva-publicacion",
+  "section": "datos-claros",
+  "type": "fact-check",
+  "title": "Título de la nueva publicación",
+  "description": "Resume el contenido que vas a desarrollar.",
+  "lead": {
+    "content": "Escribe aquí la entradilla y añade referencias para las afirmaciones factuales."
+  },
+  "blocks": [
+    {
+      "id": "afirmacion-evaluada",
+      "type": "heading",
+      "level": 2,
+      "content": "La afirmación"
+    },
+    {
+      "id": "afirmacion",
+      "type": "paragraph",
+      "evidence": "declaration",
+      "content": "Reproduce o parafrasea con fidelidad la afirmación, identifica su autor y fecha.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    },
+    {
+      "id": "verificacion",
+      "type": "heading",
+      "level": 2,
+      "content": "Qué muestra la evidencia"
+    },
+    {
+      "id": "contraste-documental",
+      "type": "paragraph",
+      "evidence": "analysis",
+      "content": "Contrasta la afirmación con evidencia y explica el contexto.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    },
+    {
+      "id": "conclusion",
+      "type": "heading",
+      "level": 2,
+      "content": "La conclusión y sus límites"
+    },
+    {
+      "id": "resultado",
+      "type": "paragraph",
+      "evidence": "analysis",
+      "content": "Formula una conclusión proporcional a la evidencia. Evita una etiqueta que exceda lo demostrado.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    },
+    {
+      "id": "metodo-editorial",
+      "type": "methodology",
+      "title": "Cómo se elaboró esta publicación",
+      "content": "Explica el criterio de verificación, las búsquedas y la trazabilidad de los documentos.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    }
+  ]
+}

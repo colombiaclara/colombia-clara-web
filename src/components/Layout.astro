@@ -1,0 +1,124 @@
+---
+import { model } from '../build/get-model';
+import { Header } from '../lib/layout/Header';
+import { Footer } from '../lib/layout/Footer';
+import '../styles/tokens.css';
+import '../styles/global.css';
+interface Props {
+  title: string;
+  description?: string;
+  path?: string;
+  article?: { id: string; publishedAt?: string; updatedAt?: string; authors: { name: string }[] };
+  noindex?: boolean;
+}
+const {
+  title,
+  description = model.site.description,
+  path = Astro.url.pathname,
+  article,
+  noindex = false,
+} = Astro.props;
+const canonical = new URL(path, model.origin).href;
+const image = new URL(model.base + `social/${article?.id ?? 'home'}.png`, model.origin).href;
+const fontStyles = ['source-serif-4', 'source-sans-3']
+  .flatMap((font) =>
+    [400, 600, 700].map(
+      (weight) =>
+        `@font-face{font-family:'${font === 'source-serif-4' ? 'Source Serif 4' : 'Source Sans 3'}';src:url('${model.base}fonts/${font}-latin-${weight}-normal.woff2') format('woff2');font-style:normal;font-weight:${weight};font-display:swap}`,
+    ),
+  )
+  .join('');
+const schema = article
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description,
+      url: canonical,
+      datePublished: article.publishedAt,
+      dateModified: article.updatedAt ?? article.publishedAt,
+      author: article.authors.map((a) => ({ '@type': 'Person', name: a.name })),
+      publisher: { '@type': 'Organization', name: model.site.name },
+      image,
+    }
+  : null;
+---
+
+<!doctype html>
+<html lang="es-CO">
+  <head
+    ><meta charset="UTF-8" /><meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    /><title>{title === 'Colombia Clara' ? title : `${title} · Colombia Clara`}</title><meta
+      name="description"
+      content={description}
+    /><link rel="canonical" href={canonical} /><meta property="og:title" content={title} /><meta
+      property="og:description"
+      content={description}
+    /><meta property="og:type" content={article ? 'article' : 'website'} /><meta
+      property="og:url"
+      content={canonical}
+    /><meta property="og:image" content={image} /><meta
+      property="og:image:width"
+      content="1200"
+    /><meta property="og:image:height" content="630" /><meta
+      property="og:locale"
+      content="es_CO"
+    /><meta name="twitter:card" content="summary_large_image" /><meta
+      name="twitter:title"
+      content={title}
+    /><meta name="twitter:description" content={description} /><meta
+      name="twitter:image"
+      content={image}
+    /><meta name="theme-color" content="#006d77" /><link
+      rel="icon"
+      href={model.base + 'favicon.svg'}
+      type="image/svg+xml"
+    /><link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Colombia Clara"
+      href={model.base + 'rss.xml'}
+    />{(model.demo || noindex) && <meta name="robots" content="noindex, nofollow" />}{
+      schema && (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify(schema).replace(/</g, '\\u003c')}
+        />
+      )
+    }
+    <style is:inline set:html={fontStyles}></style>
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script></head
+  ><body
+    ><a class="skip-link" href="#contenido">Saltar al contenido</a>{
+      model.demo && (
+        <div class="demo-banner">
+          DEMOSTRACIÓN LOCAL · Artículos, fuentes y datos sintéticos. No es contenido periodístico.
+        </div>
+      )
+    }<div class="site-shell">
+      <Header site={model.site} base={model.base} /><main id="contenido"><slot /></main><Footer
+        site={model.site}
+        base={model.base}
+      />
+    </div><script>
+      document.querySelectorAll<HTMLDetailsElement>('.mobile-menu').forEach((menu) => {
+        menu.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') {
+            menu.open = false;
+            menu.querySelector('summary')?.focus();
+          }
+        });
+        menu.querySelectorAll('a').forEach((a) =>
+          a.addEventListener('click', () => {
+            menu.open = false;
+          }),
+        );
+      });
+    </script></body
+  >
+</html>

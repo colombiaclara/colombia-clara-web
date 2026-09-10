@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0",
+  "items": [
+    {
+      "id": "sin-mordaza",
+      "name": "Sin Mordaza",
+      "description": "Investigamos el poder, las decisiones públicas y sus consecuencias.",
+      "question": "¿Quién decide y a quién debe responder?"
+    },
+    {
+      "id": "datos-claros",
+      "name": "Datos Claros",
+      "description": "Leemos las cifras con contexto, método y sus límites a la vista.",
+      "question": "¿Qué muestran los datos y qué falta por saber?"
+    },
+    {
+      "id": "planeta-comun",
+      "name": "Planeta Común",
+      "description": "Ambiente, biodiversidad y clima desde los territorios.",
+      "question": "¿Cómo cuidamos lo que compartimos?"
+    },
+    {
+      "id": "voces-claras",
+      "name": "Voces Claras",
+      "description": "Escuchamos experiencias y perspectivas de las comunidades.",
+      "question": "¿Quién vive esta historia y quién falta por escuchar?"
+    },
+    {
+      "id": "escuela-clara",
+      "name": "Escuela Clara",
+      "description": "Herramientas para comprobar información y formar criterio.",
+      "question": "¿Cómo puedo verificarlo por mi cuenta?"
+    }
+  ]
+}

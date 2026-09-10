@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "1.0",
+  "status": "draft",
+  "authors": ["autor-por-definir"],
+  "tags": [],
+  "id": "pub-nueva-publicacion",
+  "slug": "nueva-publicacion",
+  "section": "datos-claros",
+  "type": "investigation",
+  "title": "Título de la nueva publicación",
+  "description": "Resume el contenido que vas a desarrollar.",
+  "lead": {
+    "content": "Escribe aquí la entradilla y añade referencias para las afirmaciones factuales."
+  },
+  "blocks": [
+    {
+      "id": "hallazgo-central",
+      "type": "heading",
+      "level": 2,
+      "content": "El hallazgo"
+    },
+    {
+      "id": "hallazgo-documentado",
+      "type": "paragraph",
+      "evidence": "fact",
+      "content": "Describe el hallazgo y enlaza el documento concreto que lo respalda.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    },
+    {
+      "id": "mecanismo",
+      "type": "heading",
+      "level": 2,
+      "content": "Cómo ocurrió"
+    },
+    {
+      "id": "mecanismo-documentado",
+      "type": "paragraph",
+      "evidence": "analysis",
+      "content": "Reconstruye el mecanismo con referencias verificables.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    },
+    {
+      "id": "consecuencias",
+      "type": "heading",
+      "level": 2,
+      "content": "A quién afecta"
+    },
+    {
+      "id": "impacto",
+      "type": "paragraph",
+      "evidence": "fact",
+      "content": "Explica las consecuencias documentadas y sus límites.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    },
+    {
+      "id": "contraste",
+      "type": "heading",
+      "level": 2,
+      "content": "Las respuestas y el contraste"
+    },
+    {
+      "id": "respuesta",
+      "type": "paragraph",
+      "evidence": "declaration",
+      "content": "Presenta la respuesta atribuida o documenta el intento de contacto. No inventes declaraciones.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    },
+    {
+      "id": "metodo-editorial",
+      "type": "methodology",
+      "title": "Cómo se elaboró esta publicación",
+      "content": "Documenta el trabajo de reportería, los cruces de información y las limitaciones.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    }
+  ]
+}

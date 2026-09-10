@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "1.0",
+  "id": "comparacion",
+  "title": "Recuento de categorías simuladas",
+  "columns": [
+    {
+      "id": "categoria",
+      "label": "Categoría",
+      "type": "string"
+    },
+    {
+      "id": "cantidad",
+      "label": "Cantidad",
+      "type": "number",
+      "unit": "unidades"
+    }
+  ],
+  "rows": [
+    {
+      "categoria": "Categoría A",
+      "cantidad": 120
+    },
+    {
+      "categoria": "Categoría B",
+      "cantidad": 150
+    }
+  ],
+  "citations": [
+    {
+      "sourceId": "src-demo-recuento",
+      "locator": {
+        "type": "table",
+        "value": "Recuento simulado"
+      }
+    }
+  ],
+  "methodology": "Datos sintéticos. Diferencia B − A = 30; variación respecto de A = 30 / 120 × 100 = 25 %.",
+  "period": "Ejercicio sin periodo real"
+}

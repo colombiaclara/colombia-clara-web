@@ -1,0 +1,19 @@
+---
+import Layout from '../components/Layout.astro';
+import { model } from '../build/get-model';
+---
+
+<Layout title="Página no encontrada" path={model.base + '404.html'} noindex
+  ><section class="not-found">
+    <p class="kicker">404 · PÁGINA NO ENCONTRADA</p><h1>
+      Este camino no lleva a una publicación.
+    </h1><p>
+      Puede que el enlace haya cambiado. Puedes volver al inicio o recorrer las publicaciones.
+    </p><div>
+      <a class="button primary" href={model.base}>Ir al inicio</a><a
+        class="button"
+        href={model.base + 'publicaciones/'}>Ver publicaciones</a
+      >
+    </div>
+  </section></Layout
+>

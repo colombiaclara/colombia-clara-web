@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0",
+  "id": "puntos",
+  "title": "Observaciones simuladas",
+  "columns": [
+    {
+      "id": "x",
+      "label": "Variable X",
+      "type": "number",
+      "unit": "unidades"
+    },
+    {
+      "id": "y",
+      "label": "Variable Y",
+      "type": "number",
+      "unit": "unidades"
+    }
+  ],
+  "rows": [
+    {
+      "x": 1,
+      "y": 3
+    },
+    {
+      "x": 2,
+      "y": 6
+    },
+    {
+      "x": 4,
+      "y": 4
+    },
+    {
+      "x": 6,
+      "y": 8
+    },
+    {
+      "x": 9,
+      "y": 6
+    },
+    {
+      "x": 10,
+      "y": null
+    }
+  ],
+  "citations": [
+    {
+      "sourceId": "src-demo-recuento",
+      "locator": {
+        "type": "table",
+        "value": "Recuento simulado"
+      }
+    }
+  ],
+  "methodology": "Pares de valores sintéticos para probar dispersión y distribución. El histograma agrupa la variable indicada y declara la cantidad de valores ausentes.",
+  "period": "Ejercicio sin periodo real"
+}

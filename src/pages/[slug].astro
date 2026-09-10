@@ -1,0 +1,69 @@
+---
+import Layout from '../components/Layout.astro';
+import Blocks from '../components/Blocks.astro';
+import { model } from '../build/get-model';
+import { Breadcrumbs } from '../lib/layout/Breadcrumbs';
+import { SourceCard } from '../lib/sources/SourceCard';
+import { Corrections } from '../lib/content/Corrections';
+export function getStaticPaths() {
+  return model.pages.flatMap((r) => [
+    { params: { slug: r.document.slug }, props: { resolved: r } },
+    ...(r.document.previousSlugs ?? []).map((slug) => ({
+      params: { slug },
+      props: { resolved: r, redirect: true },
+    })),
+  ]);
+}
+const { resolved: r, redirect } = Astro.props;
+---
+
+{
+  redirect ? (
+    <html lang="es">
+      <>
+        <head>
+          <>
+            <meta http-equiv="refresh" content={`0;url=${r.url}`} />
+            <link rel="canonical" href={new URL(r.url, model.origin).href} />
+            <title>Página trasladada</title>
+          </>
+        </head>
+        <body>
+          <a href={r.url}>Continuar a {r.document.title}</a>
+        </body>
+      </>
+    </html>
+  ) : (
+    <Layout
+      title={r.document.title}
+      description={r.document.description}
+      noindex={r.document.status === 'draft'}
+    >
+      <Breadcrumbs items={[{ label: 'Inicio', href: model.base }, { label: r.document.title }]} />
+      {r.document.status === 'draft' && (
+        <div class="draft-banner">BORRADOR · Solo visible en desarrollo.</div>
+      )}
+      <article class="institutional">
+        <header class="page-heading">
+          <p class="eyebrow">COLOMBIA CLARA</p>
+          <h1>{r.document.title}</h1>
+          <p class="page-description">{r.document.description}</p>
+        </header>
+        <Blocks resolved={r} />
+        <Corrections items={r.document.corrections ?? []} />
+        {Object.keys(r.sources).length > 0 && (
+          <section id="fuentes">
+            <h2>Fuentes</h2>
+            {Object.values(r.sources).map((s) => (
+              <SourceCard
+                source={s}
+                base={model.base}
+                count={model.uses[s.id].filter((u) => !u.institutional).length}
+              />
+            ))}
+          </section>
+        )}
+      </article>
+    </Layout>
+  )
+}

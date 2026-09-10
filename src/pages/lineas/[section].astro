@@ -1,0 +1,42 @@
+---
+import Layout from '../../components/Layout.astro';
+import { model } from '../../build/get-model';
+import { PublicationSummary } from '../../lib/publications/PublicationSummary';
+import { Breadcrumbs } from '../../lib/layout/Breadcrumbs';
+import { EmptyState } from '../../lib/ui/EmptyState';
+import type { Publication } from '../../generated/content';
+export function getStaticPaths() {
+  return model.sections.items.map((section) => ({
+    params: { section: section.id },
+    props: { section },
+  }));
+}
+const { section } = Astro.props;
+const publications = model.publications.filter(
+  (r) => (r.document as Publication).section === section.id,
+);
+---
+
+<Layout title={section.name} description={section.description}
+  ><Breadcrumbs items={[{ label: 'Inicio', href: model.base }, { label: section.name }]} /><header
+    class="listing-header"
+    data-section={section.id}
+  >
+    <p class="kicker">LÍNEA EDITORIAL</p><h1>{section.name}</h1><p class="lead">
+      {section.description}
+    </p><p class="line-question">{section.question}</p>
+  </header>{
+    publications.length ? (
+      <div class="publication-grid">
+        {publications.map((r) => (
+          <PublicationSummary publication={r.document as Publication} base={model.base} />
+        ))}
+      </div>
+    ) : (
+      <EmptyState
+        title="Las primeras historias están por venir"
+        description="Las publicaciones de esta línea aparecerán aquí después de su revisión editorial."
+      />
+    )
+  }</Layout
+>

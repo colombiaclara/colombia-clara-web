@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1.0",
+  "id": "matriz",
+  "title": "Matriz simulada",
+  "columns": [
+    {
+      "id": "grupo",
+      "label": "Grupo",
+      "type": "string"
+    },
+    {
+      "id": "periodo",
+      "label": "Periodo",
+      "type": "string"
+    },
+    {
+      "id": "valor",
+      "label": "Valor",
+      "type": "number",
+      "unit": "unidades"
+    }
+  ],
+  "rows": [
+    {
+      "grupo": "A",
+      "periodo": "Inicial",
+      "valor": 0
+    },
+    {
+      "grupo": "A",
+      "periodo": "Final",
+      "valor": 10
+    },
+    {
+      "grupo": "B",
+      "periodo": "Inicial",
+      "valor": 20
+    },
+    {
+      "grupo": "B",
+      "periodo": "Final",
+      "valor": null
+    },
+    {
+      "grupo": "C",
+      "periodo": "Inicial",
+      "valor": 40
+    },
+    {
+      "grupo": "C",
+      "periodo": "Final",
+      "valor": 50
+    }
+  ],
+  "citations": [
+    {
+      "sourceId": "src-demo-recuento",
+      "locator": {
+        "type": "table",
+        "value": "Recuento simulado"
+      }
+    }
+  ],
+  "methodology": "Matriz sintética de dos dimensiones con celdas definidas expresamente. Los valores no representan observaciones sobre Colombia.",
+  "period": "Ejercicio sin periodo real"
+}

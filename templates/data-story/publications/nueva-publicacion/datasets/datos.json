@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0",
+  "id": "datos",
+  "title": "Datos por completar",
+  "columns": [
+    {
+      "id": "categoria",
+      "label": "Categoría",
+      "type": "string"
+    },
+    {
+      "id": "valor",
+      "label": "Valor",
+      "type": "number",
+      "unit": "unidad-por-definir"
+    }
+  ],
+  "rows": [],
+  "citations": [
+    {
+      "sourceId": "src-por-definir"
+    }
+  ],
+  "methodology": "Dataset vacío de plantilla. Añade observaciones comprobadas y describe su preparación antes de publicar."
+}

@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "./editorial.schema.json#/$defs/Source",
+  "title": "Source",
+  "description": "Contrato de Source; definición canónica en editorial.schema.json."
+}

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "id": "src-demo-metodo",
+  "title": "Notas del ejercicio de comparación",
+  "kind": "interview",
+  "creators": [
+    {
+      "name": "Equipo de demostración"
+    }
+  ],
+  "accessedAt": "2026-09-09",
+  "language": "es",
+  "description": "Material ficticio para probar la navegación. No constituye una fuente periodística."
+}

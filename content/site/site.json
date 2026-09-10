@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0",
+  "name": "Colombia Clara",
+  "tagline": "Periodismo cívico para comprender y actuar.",
+  "descriptor": "Ecosistema cívico de información, investigación y participación",
+  "description": "Explicaciones, investigaciones y datos para comprender Colombia con fuentes que puedes revisar.",
+  "navigation": [
+    {
+      "label": "Publicaciones",
+      "path": "/publicaciones/"
+    },
+    {
+      "label": "Fuentes",
+      "path": "/fuentes/"
+    },
+    {
+      "label": "Acerca de Colombia Clara",
+      "path": "/acerca/"
+    },
+    {
+      "label": "Cómo trabajamos",
+      "path": "/metodologia/"
+    }
+  ]
+}

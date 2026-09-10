@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "1.0",
+  "status": "draft",
+  "authors": ["autor-por-definir"],
+  "tags": [],
+  "id": "pub-nueva-publicacion",
+  "slug": "nueva-publicacion",
+  "section": "datos-claros",
+  "type": "guide",
+  "title": "Título de la nueva publicación",
+  "description": "Resume el contenido que vas a desarrollar.",
+  "lead": {
+    "content": "Escribe aquí la entradilla y añade referencias para las afirmaciones factuales."
+  },
+  "blocks": [
+    {
+      "id": "objetivo-guia",
+      "type": "heading",
+      "level": 2,
+      "content": "Para qué sirve esta guía"
+    },
+    {
+      "id": "destinatarios",
+      "type": "paragraph",
+      "evidence": "transition",
+      "content": "Define la tarea, su alcance y los requisitos necesarios."
+    },
+    {
+      "id": "pasos-guia",
+      "type": "heading",
+      "level": 2,
+      "content": "Paso a paso"
+    },
+    {
+      "id": "procedimiento",
+      "type": "list",
+      "ordered": true,
+      "items": [
+        {
+          "content": "Sustituye por el primer paso comprobado.",
+          "citations": [
+            {
+              "sourceId": "src-por-definir"
+            }
+          ]
+        },
+        {
+          "content": "Sustituye por el siguiente paso y explica cómo comprobar el resultado.",
+          "citations": [
+            {
+              "sourceId": "src-por-definir"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "limites-guia",
+      "type": "heading",
+      "level": 2,
+      "content": "Alcance y precauciones"
+    },
+    {
+      "id": "limites",
+      "type": "paragraph",
+      "evidence": "transition",
+      "content": "Explica qué cubre esta guía y cuándo se necesita orientación adicional."
+    },
+    {
+      "id": "metodo-editorial",
+      "type": "methodology",
+      "title": "Cómo se elaboró esta publicación",
+      "content": "Documenta cómo se comprobaron los pasos y cuándo se revisó el procedimiento.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    }
+  ]
+}

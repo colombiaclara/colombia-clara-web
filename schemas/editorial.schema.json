@@ -1,0 +1,1672 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://colombiaclara.github.io/schemas/editorial.schema.json",
+  "title": "EditorialModel",
+  "description": "Contrato canónico Colombia Clara v1.0. Los tipos TypeScript se generan desde este archivo.",
+  "type": "object",
+  "properties": {
+    "publication": {
+      "$ref": "#/$defs/Publication"
+    },
+    "page": {
+      "$ref": "#/$defs/Page"
+    },
+    "source": {
+      "$ref": "#/$defs/Source"
+    },
+    "author": {
+      "$ref": "#/$defs/Author"
+    },
+    "dataset": {
+      "$ref": "#/$defs/Dataset",
+      "description": "Ruta datasets/<id>.json dentro del directorio de la publicación."
+    },
+    "site": {
+      "$ref": "#/$defs/Site"
+    },
+    "home": {
+      "$ref": "#/$defs/Home"
+    },
+    "sections": {
+      "$ref": "#/$defs/Sections"
+    }
+  },
+  "required": ["publication", "page", "source", "author", "dataset", "site", "home", "sections"],
+  "additionalProperties": false,
+  "$defs": {
+    "Citation": {
+      "type": "object",
+      "properties": {
+        "sourceId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "ID de una ficha en content/sources/."
+        },
+        "locator": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["page", "section", "table", "fragment", "timestamp"],
+              "description": "Tipo de publicación, bloque, nodo o variable dentro del contrato."
+            },
+            "value": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000,
+              "description": "Valor del campo o localizador según el tipo de bloque."
+            }
+          },
+          "required": ["type", "value"],
+          "additionalProperties": false,
+          "description": "Página, sección, tabla, fragmento o minuto que respalda la cita."
+        },
+        "role": {
+          "type": "string",
+          "enum": ["primary", "secondary"],
+          "description": "Papel primario o secundario de la fuente en esta cita concreta."
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Alcance o límite de la evidencia, visible junto a la referencia."
+        }
+      },
+      "required": ["sourceId"],
+      "additionalProperties": false,
+      "title": "Citation"
+    },
+    "InlineNode": {
+      "title": "InlineNode",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["text", "emphasis", "strong"],
+              "description": "Tipo de publicación, bloque, nodo o variable dentro del contrato."
+            },
+            "content": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000,
+              "description": "Texto plano o nodos inline permitidos. No HTML ni Markdown."
+            }
+          },
+          "required": ["type", "content"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "link",
+              "description": "Tipo de publicación, bloque, nodo o variable dentro del contrato."
+            },
+            "content": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000,
+              "description": "Texto plano o nodos inline permitidos. No HTML ni Markdown."
+            },
+            "href": {
+              "type": "string",
+              "pattern": "^(https?://|/|#)[^\\s]*$",
+              "description": "Enlace HTTP(S), ruta interna desde / o ancla; no esquemas ejecutables."
+            }
+          },
+          "required": ["type", "content", "href"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "citation",
+              "description": "Tipo de publicación, bloque, nodo o variable dentro del contrato."
+            },
+            "citation": {
+              "$ref": "#/$defs/Citation"
+            }
+          },
+          "required": ["type", "citation"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "RichContent": {
+      "title": "RichContent",
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Texto legible"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/InlineNode"
+          },
+          "minItems": 1,
+          "maxItems": 200
+        }
+      ]
+    },
+    "RichText": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "$ref": "#/$defs/RichContent",
+          "description": "Texto plano o nodos inline permitidos. No HTML ni Markdown."
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "maxItems": 50,
+          "description": "Fuentes que respaldan este contenido, con localizador cuando corresponda."
+        }
+      },
+      "required": ["content"],
+      "additionalProperties": false,
+      "title": "RichText"
+    },
+    "ImageSpec": {
+      "type": "object",
+      "properties": {
+        "src": {
+          "type": "string",
+          "pattern": "^assets/[a-zA-Z0-9_./-]+$",
+          "description": "Ruta local dentro de assets/, sin salir de la carpeta."
+        },
+        "alt": {
+          "type": "string",
+          "maxLength": 2000,
+          "description": "Descripción alternativa de la información visual; vacío solo si es decorativa."
+        },
+        "credit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Autoría o procedencia confirmada de la imagen."
+        },
+        "caption": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Pie que aporta contexto a la imagen."
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Licencia o condición de uso comprobada."
+        }
+      },
+      "required": ["src", "alt", "credit"],
+      "additionalProperties": false,
+      "title": "ImageSpec"
+    },
+    "Column": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Nombre legible que verá la persona usuaria."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["string", "number", "date"],
+          "description": "Tipo de publicación, bloque, nodo o variable dentro del contrato."
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Unidad observada y comparable; % son puntos de porcentaje, no fracciones."
+        }
+      },
+      "required": ["id", "label", "type"],
+      "additionalProperties": false,
+      "title": "Column"
+    },
+    "Dataset": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Ruta al esquema local para autocompletado; opcional."
+        },
+        "schemaVersion": {
+          "const": "1.0",
+          "description": "Versión del contrato. Usa 1.0."
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Título concreto y legible que describe el asunto o el componente."
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Column"
+          },
+          "minItems": 1,
+          "maxItems": 50,
+          "description": "Definición única de las columnas y sus tipos."
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": {
+              "type": ["string", "number", "null"]
+            }
+          },
+          "maxItems": 20000,
+          "description": "Filas por ID de columna. Usa null para ausente y 0 para cero observado."
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "minItems": 1,
+          "description": "Fuentes que respaldan este contenido, con localizador cuando corresponda."
+        },
+        "methodology": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Origen, selección, transformaciones y límites del dataset."
+        },
+        "geography": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Cobertura territorial de los datos cuando corresponde."
+        },
+        "period": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Periodo o marco temporal al que se refiere la cifra."
+        },
+        "calculation": {
+          "type": "object",
+          "properties": {
+            "formula": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000,
+              "description": "Descripción legible de la fórmula; no código ejecutable."
+            },
+            "inputs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000,
+                "description": "Texto legible"
+              },
+              "minItems": 1,
+              "description": "Datos de entrada o sus referencias publicables."
+            },
+            "rounding": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000,
+              "description": "Regla de redondeo aplicada al cálculo."
+            }
+          },
+          "required": ["formula", "inputs"],
+          "additionalProperties": false,
+          "description": "Fórmula y entradas utilizadas para producir datos calculados."
+        }
+      },
+      "required": ["schemaVersion", "id", "title", "columns", "rows", "citations", "methodology"],
+      "additionalProperties": false,
+      "title": "Dataset"
+    },
+    "ChartOptions": {
+      "type": "object",
+      "properties": {
+        "orientation": {
+          "type": "string",
+          "enum": ["horizontal", "vertical"],
+          "description": "Barras horizontales o verticales."
+        },
+        "bins": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 50,
+          "description": "Objetivo de 2 a 50 intervalos para el histograma; D3 puede ajustar límites."
+        },
+        "seriesFilter": {
+          "type": "boolean",
+          "description": "Permite activar y desactivar las series del gráfico."
+        },
+        "periodFilter": {
+          "type": "boolean",
+          "description": "Permite filtrar desde/hasta sobre la columna de fechas."
+        },
+        "sort": {
+          "type": "string",
+          "enum": ["input", "ascending", "descending"],
+          "description": "Orden de entrada, ascendente o descendente en gráficos categóricos compatibles."
+        },
+        "format": {
+          "type": "string",
+          "enum": ["number", "percent", "currency"],
+          "description": "number, percent o currency; no convierte unidades ni divisas."
+        },
+        "currency": {
+          "type": "string",
+          "enum": ["COP", "USD", "EUR", "CHF"],
+          "description": "Moneda de los datos: COP, USD, EUR o CHF."
+        },
+        "decimals": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 6,
+          "description": "Máximo de decimales visibles, de 0 a 6. El CSV conserva precisión."
+        },
+        "scale": {
+          "type": "string",
+          "enum": ["linear", "log"],
+          "description": "linear o log; log solo en líneas de valores positivos."
+        },
+        "domain": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "Mínimo y máximo explícitos de una línea; nunca oculta observaciones."
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "title": "ChartOptions"
+    },
+    "ParagraphBlock": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+        },
+        "type": {
+          "const": "paragraph",
+          "description": "Tipo de publicación, bloque, nodo o variable dentro del contrato."
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "maxItems": 50,
+          "description": "Fuentes que respaldan este contenido, con localizador cuando corresponda."
+        },
+        "width": {
+          "type": "string",
+          "enum": ["reading", "wide"],
+          "description": "reading o wide. Los gráficos y tablas se adaptan a su contenedor."
+        },
+        "content": {
+          "$ref": "#/$defs/RichContent",
+          "description": "Texto plano o nodos inline permitidos. No HTML ni Markdown."
+        },
+        "evidence": {
+          "type": "string",
+          "enum": ["fact", "declaration", "analysis", "opinion", "transition"],
+          "description": "Naturaleza editorial del párrafo; no equivale a una certificación."
+        }
+      },
+      "required": ["id", "type", "content", "evidence"],
+      "additionalProperties": false,
+      "title": "ParagraphBlock"
+    },
+    "HeadingBlock": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+        },
+        "type": {
+          "const": "heading",
+          "description": "Tipo de publicación, bloque, nodo o variable dentro del contrato."
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "maxItems": 50,
+          "description": "Fuentes que respaldan este contenido, con localizador cuando corresponda."
+        },
+        "width": {
+          "type": "string",
+          "enum": ["reading", "wide"],
+          "description": "reading o wide. Los gráficos y tablas se adaptan a su contenedor."
+        },
+        "content": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Texto plano o nodos inline permitidos. No HTML ni Markdown."
+        },
+        "level": {
+          "type": "integer",
+          "enum": [2, 3],
+          "description": "Nivel 2 o 3, sin saltar la jerarquía de encabezados."
+        }
+      },
+      "required": ["id", "type", "content", "level"],
+      "additionalProperties": false,
+      "title": "HeadingBlock"
+    },
+    "ListBlock": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+        },
+        "type": {
+          "const": "list",
+          "description": "Tipo de publicación, bloque, nodo o variable dentro del contrato."
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "maxItems": 50,
+          "description": "Fuentes que respaldan este contenido, con localizador cuando corresponda."
+        },
+        "width": {
+          "type": "string",
+          "enum": ["reading", "wide"],
+          "description": "reading o wide. Los gráficos y tablas se adaptan a su contenedor."
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RichText"
+          },
+          "minItems": 1,
+          "maxItems": 100,
+          "description": "Elementos ordenados del componente."
+        },
+        "ordered": {
+          "type": "boolean",
+          "description": "true crea una lista numerada."
+        }
+      },
+      "required": ["id", "type", "items"],
+      "additionalProperties": false,
+      "title": "ListBlock"
+    },
+    "QuoteBlock": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+        },
+        "type": {
+          "const": "quote",
+          "description": "Tipo de publicación, bloque, nodo o variable dentro del contrato."
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "maxItems": 50,
+          "description": "Fuentes que respaldan este contenido, con localizador cuando corresponda."
+        },
+        "width": {
+          "type": "string",
+          "enum": ["reading", "wide"],
+          "description": "reading o wide. Los gráficos y tablas se adaptan a su contenedor."
+        },
+        "content": {
+          "$ref": "#/$defs/RichContent",
+          "description": "Texto plano o nodos inline permitidos. No HTML ni Markdown."
+        },
+        "attribution": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Persona o documento al que se atribuye la cita."
+        }
+      },
+      "required": ["id", "type", "content", "attribution", "citations"],
+      "additionalProperties": false,
+      "title": "QuoteBlock"
+    },
+    "ImageBlock": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+        },
+        "type": {
+          "const": "image",
+          "description": "Tipo de publicación, bloque, nodo o variable dentro del contrato."
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "maxItems": 50,
+          "description": "Fuentes que respaldan este contenido, con localizador cuando corresponda."
+        },
+        "width": {
+          "type": "string",
+          "enum": ["reading", "wide"],
+          "description": "reading o wide. Los gráficos y tablas se adaptan a su contenedor."
+        },
+        "image": {
+          "$ref": "#/$defs/ImageSpec",
+          "description": "Ficha de imagen con ruta, alt y crédito."
+        }
+      },
+      "required": ["id", "type", "image"],
+      "additionalProperties": false,
+      "title": "ImageBlock"
+    },
+    "ContextBlock": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+        },
+        "type": {
+          "const": "context",
+          "description": "Tipo de publicación, bloque, nodo o variable dentro del contrato."
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "maxItems": 50,
+          "description": "Fuentes que respaldan este contenido, con localizador cuando corresponda."
+        },
+        "width": {
+          "type": "string",
+          "enum": ["reading", "wide"],
+          "description": "reading o wide. Los gráficos y tablas se adaptan a su contenedor."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Título concreto y legible que describe el asunto o el componente."
+        },
+        "content": {
+          "$ref": "#/$defs/RichContent",
+          "description": "Texto plano o nodos inline permitidos. No HTML ni Markdown."
+        },
+        "tone": {
+          "type": "string",
+          "enum": ["context", "uncertainty", "correction"],
+          "description": "context, uncertainty o correction para presentar la nota."
+        }
+      },
+      "required": ["id", "type", "title", "content", "tone"],
+      "additionalProperties": false,
+      "title": "ContextBlock"
+    },
+    "TimelineBlock": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+        },
+        "type": {
+          "const": "timeline",
+          "description": "Tipo de publicación, bloque, nodo o variable dentro del contrato."
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "maxItems": 50,
+          "description": "Fuentes que respaldan este contenido, con localizador cuando corresponda."
+        },
+        "width": {
+          "type": "string",
+          "enum": ["reading", "wide"],
+          "description": "reading o wide. Los gráficos y tablas se adaptan a su contenedor."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Título concreto y legible que describe el asunto o el componente."
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": {
+                "type": "string",
+                "format": "date",
+                "description": "Fecha editorial AAAA-MM-DD, sin hora."
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000,
+                "description": "Título concreto y legible que describe el asunto o el componente."
+              },
+              "content": {
+                "$ref": "#/$defs/RichContent",
+                "description": "Texto plano o nodos inline permitidos. No HTML ni Markdown."
+              },
+              "citations": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/Citation"
+                },
+                "minItems": 1,
+                "description": "Fuentes que respaldan este contenido, con localizador cuando corresponda."
+              }
+            },
+            "required": ["date", "title", "content", "citations"],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "description": "Elementos ordenados del componente."
+        }
+      },
+      "required": ["id", "type", "title", "items"],
+      "additionalProperties": false,
+      "title": "TimelineBlock"
+    },
+    "MethodologyBlock": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+        },
+        "type": {
+          "const": "methodology",
+          "description": "Tipo de publicación, bloque, nodo o variable dentro del contrato."
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "maxItems": 50,
+          "description": "Fuentes que respaldan este contenido, con localizador cuando corresponda."
+        },
+        "width": {
+          "type": "string",
+          "enum": ["reading", "wide"],
+          "description": "reading o wide. Los gráficos y tablas se adaptan a su contenedor."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Título concreto y legible que describe el asunto o el componente."
+        },
+        "content": {
+          "$ref": "#/$defs/RichContent",
+          "description": "Texto plano o nodos inline permitidos. No HTML ni Markdown."
+        }
+      },
+      "required": ["id", "type", "title", "content"],
+      "additionalProperties": false,
+      "title": "MethodologyBlock"
+    },
+    "MetricBlock": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+        },
+        "type": {
+          "const": "metric",
+          "description": "Tipo de publicación, bloque, nodo o variable dentro del contrato."
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "maxItems": 50,
+          "description": "Fuentes que respaldan este contenido, con localizador cuando corresponda."
+        },
+        "width": {
+          "type": "string",
+          "enum": ["reading", "wide"],
+          "description": "reading o wide. Los gráficos y tablas se adaptan a su contenedor."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Título concreto y legible que describe el asunto o el componente."
+        },
+        "value": {
+          "type": "number",
+          "description": "Valor del campo o localizador según el tipo de bloque."
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Unidad observada y comparable; % son puntos de porcentaje, no fracciones."
+        },
+        "period": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Periodo o marco temporal al que se refiere la cifra."
+        },
+        "comparison": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "number",
+              "description": "Valor del campo o localizador según el tipo de bloque."
+            },
+            "period": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000,
+              "description": "Periodo o marco temporal al que se refiere la cifra."
+            },
+            "kind": {
+              "type": "string",
+              "enum": ["relative", "percentage-points"],
+              "description": "Tipo conocido de gráfico o de documento fuente."
+            }
+          },
+          "required": ["value", "period", "kind"],
+          "additionalProperties": false,
+          "description": "Valor y periodo base para la comparación del indicador."
+        }
+      },
+      "required": ["id", "type", "title", "value", "unit", "period", "citations"],
+      "additionalProperties": false,
+      "title": "MetricBlock"
+    },
+    "TableBlock": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+        },
+        "type": {
+          "const": "table",
+          "description": "Tipo de publicación, bloque, nodo o variable dentro del contrato."
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "maxItems": 50,
+          "description": "Fuentes que respaldan este contenido, con localizador cuando corresponda."
+        },
+        "width": {
+          "type": "string",
+          "enum": ["reading", "wide"],
+          "description": "reading o wide. Los gráficos y tablas se adaptan a su contenedor."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Título concreto y legible que describe el asunto o el componente."
+        },
+        "dataset": {
+          "type": "string",
+          "pattern": "^datasets/[a-z0-9-]+\\.json$",
+          "description": "Ruta datasets/<id>.json dentro del directorio de la publicación."
+        }
+      },
+      "required": ["id", "type", "title", "dataset"],
+      "additionalProperties": false,
+      "title": "TableBlock"
+    },
+    "ChartBlock": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+        },
+        "type": {
+          "const": "chart",
+          "description": "Tipo de publicación, bloque, nodo o variable dentro del contrato."
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "maxItems": 50,
+          "description": "Fuentes que respaldan este contenido, con localizador cuando corresponda."
+        },
+        "width": {
+          "type": "string",
+          "enum": ["reading", "wide"],
+          "description": "reading o wide. Los gráficos y tablas se adaptan a su contenedor."
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "bar",
+            "grouped-bar",
+            "stacked-bar",
+            "stacked-bar-100",
+            "line",
+            "area",
+            "pie",
+            "donut",
+            "scatter",
+            "histogram",
+            "dumbbell",
+            "heatmap"
+          ],
+          "description": "Tipo conocido de gráfico o de documento fuente."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Título concreto y legible que describe el asunto o el componente."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Resumen fiel al contenido, sin introducir afirmaciones adicionales."
+        },
+        "dataset": {
+          "type": "string",
+          "pattern": "^datasets/[a-z0-9-]+\\.json$",
+          "description": "Ruta datasets/<id>.json dentro del directorio de la publicación."
+        },
+        "encoding": {
+          "type": "object",
+          "properties": {
+            "category": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+              "maxLength": 100,
+              "description": "ID de columna de categorías; date en líneas y áreas."
+            },
+            "value": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+              "maxLength": 100,
+              "description": "Valor del campo o localizador según el tipo de bloque."
+            },
+            "x": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+              "maxLength": 100,
+              "description": "ID de columna del eje X; numérica en dispersión."
+            },
+            "y": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+              "maxLength": 100,
+              "description": "ID de columna del eje Y; numérica en dispersión."
+            },
+            "series": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+                "maxLength": 100,
+                "description": "Identificador estable, en minúsculas y con guiones."
+              },
+              "minItems": 1,
+              "maxItems": 12,
+              "description": "IDs de columnas numéricas que se comparan; unidades compatibles."
+            },
+            "start": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+              "maxLength": 100,
+              "description": "ID de la columna numérica del primer momento."
+            },
+            "end": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+              "maxLength": 100,
+              "description": "ID de la columna numérica del segundo momento."
+            }
+          },
+          "required": [],
+          "additionalProperties": false,
+          "description": "Relación declarativa entre columnas y los elementos del gráfico."
+        },
+        "options": {
+          "$ref": "#/$defs/ChartOptions",
+          "description": "Opciones semánticas conocidas; no acepta funciones ni CSS."
+        }
+      },
+      "required": ["id", "type", "kind", "title", "description", "dataset", "encoding"],
+      "additionalProperties": false,
+      "title": "ChartBlock"
+    },
+    "Block": {
+      "title": "Block",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ParagraphBlock"
+        },
+        {
+          "$ref": "#/$defs/HeadingBlock"
+        },
+        {
+          "$ref": "#/$defs/ListBlock"
+        },
+        {
+          "$ref": "#/$defs/QuoteBlock"
+        },
+        {
+          "$ref": "#/$defs/ImageBlock"
+        },
+        {
+          "$ref": "#/$defs/ContextBlock"
+        },
+        {
+          "$ref": "#/$defs/TimelineBlock"
+        },
+        {
+          "$ref": "#/$defs/MethodologyBlock"
+        },
+        {
+          "$ref": "#/$defs/MetricBlock"
+        },
+        {
+          "$ref": "#/$defs/TableBlock"
+        },
+        {
+          "$ref": "#/$defs/ChartBlock"
+        }
+      ]
+    },
+    "Correction": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "Fecha editorial AAAA-MM-DD, sin hora."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Resumen fiel al contenido, sin introducir afirmaciones adicionales."
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+            "maxLength": 100,
+            "description": "Identificador estable, en minúsculas y con guiones."
+          },
+          "minItems": 1,
+          "description": "Lista ordenada de bloques que forman toda la lectura."
+        }
+      },
+      "required": ["date", "description", "blocks"],
+      "additionalProperties": false,
+      "title": "Correction"
+    },
+    "Publication": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Ruta al esquema local para autocompletado; opcional."
+        },
+        "schemaVersion": {
+          "const": "1.0",
+          "description": "Versión del contrato. Usa 1.0."
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+        },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Nombre de la carpeta y de la URL, sin tildes ni espacios."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "published"],
+          "description": "draft excluye producción; published requiere revisión editorial y fecha."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Título concreto y legible que describe el asunto o el componente."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Resumen fiel al contenido, sin introducir afirmaciones adicionales."
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "Fecha editorial real AAAA-MM-DD. No inventar si se desconoce en fuentes."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "Fecha real de cambio editorial; nunca la fecha de recompilación."
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Block"
+          },
+          "minItems": 1,
+          "maxItems": 300,
+          "description": "Lista ordenada de bloques que forman toda la lectura."
+        },
+        "previousSlugs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+            "maxLength": 100,
+            "description": "Identificador estable, en minúsculas y con guiones."
+          },
+          "uniqueItems": true,
+          "description": "Slugs anteriores para generar páginas estáticas de traslado."
+        },
+        "corrections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Correction"
+          },
+          "description": "Cambios sustanciales con fecha, explicación y apartados afectados."
+        },
+        "section": {
+          "type": "string",
+          "enum": ["sin-mordaza", "datos-claros", "planeta-comun", "voces-claras", "escuela-clara"],
+          "description": "Identificador de una de las cinco líneas editoriales."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["explainer", "investigation", "fact-check", "data-story", "testimony", "guide"],
+          "description": "Tipo de publicación, bloque, nodo o variable dentro del contrato."
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+            "maxLength": 100,
+            "description": "Identificador estable, en minúsculas y con guiones."
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "IDs de fichas de autoría reales, sin nombres escritos directamente aquí."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20000,
+            "description": "Texto legible"
+          },
+          "maxItems": 12,
+          "uniqueItems": true,
+          "description": "Etiquetas breves para encontrar contenido relacionado; sin duplicados."
+        },
+        "lead": {
+          "$ref": "#/$defs/RichText",
+          "description": "Entradilla, texto o nodos inline con sus referencias."
+        },
+        "keyPoints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RichText"
+          },
+          "maxItems": 3,
+          "description": "Hasta tres ideas iniciales y sus citas cuando expresen hechos."
+        },
+        "cover": {
+          "$ref": "#/$defs/ImageSpec",
+          "description": "Imagen opcional de portada, con ruta, alt y crédito."
+        },
+        "related": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+            "maxLength": 100,
+            "description": "Identificador estable, en minúsculas y con guiones."
+          },
+          "maxItems": 4,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "slug",
+        "status",
+        "title",
+        "description",
+        "section",
+        "type",
+        "authors",
+        "tags",
+        "lead",
+        "blocks"
+      ],
+      "additionalProperties": false,
+      "title": "Publication"
+    },
+    "Page": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Ruta al esquema local para autocompletado; opcional."
+        },
+        "schemaVersion": {
+          "const": "1.0",
+          "description": "Versión del contrato. Usa 1.0."
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+        },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Nombre de la carpeta y de la URL, sin tildes ni espacios."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "published"],
+          "description": "draft excluye producción; published requiere revisión editorial y fecha."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Título concreto y legible que describe el asunto o el componente."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Resumen fiel al contenido, sin introducir afirmaciones adicionales."
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "Fecha editorial real AAAA-MM-DD. No inventar si se desconoce en fuentes."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "Fecha real de cambio editorial; nunca la fecha de recompilación."
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Block"
+          },
+          "minItems": 1,
+          "maxItems": 300,
+          "description": "Lista ordenada de bloques que forman toda la lectura."
+        },
+        "previousSlugs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+            "maxLength": 100,
+            "description": "Identificador estable, en minúsculas y con guiones."
+          },
+          "uniqueItems": true,
+          "description": "Slugs anteriores para generar páginas estáticas de traslado."
+        },
+        "corrections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Correction"
+          },
+          "description": "Cambios sustanciales con fecha, explicación y apartados afectados."
+        }
+      },
+      "required": ["schemaVersion", "id", "slug", "status", "title", "description", "blocks"],
+      "additionalProperties": false,
+      "title": "Page"
+    },
+    "Source": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Ruta al esquema local para autocompletado; opcional."
+        },
+        "schemaVersion": {
+          "const": "1.0",
+          "description": "Versión del contrato. Usa 1.0."
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Título concreto y legible que describe el asunto o el componente."
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "report",
+            "dataset",
+            "academic-paper",
+            "news-article",
+            "official-record",
+            "interview",
+            "web-page"
+          ],
+          "description": "Tipo conocido de gráfico o de documento fuente."
+        },
+        "creators": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000,
+                "description": "Nombre público confirmado."
+              }
+            },
+            "required": ["name"],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "description": "Autorías del documento fuente, no nombres inventados."
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Institución o entidad editora cuando se conoce."
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^https?://[^\\s]+$",
+          "format": "uri",
+          "description": "URL HTTP(S) pública del recurso original."
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "Fecha editorial real AAAA-MM-DD. No inventar si se desconoce en fuentes."
+        },
+        "accessedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "Día en que se consultó el recurso, formato AAAA-MM-DD."
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Idioma de la fuente, por ejemplo es."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Resumen fiel al contenido, sin introducir afirmaciones adicionales."
+        },
+        "archivedUrl": {
+          "type": "string",
+          "pattern": "^https?://[^\\s]+$",
+          "format": "uri",
+          "description": "URL HTTP(S) de una copia archivada identificable."
+        },
+        "edition": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Edición o versión del documento consultado."
+        },
+        "asset": {
+          "type": "string",
+          "pattern": "^assets/[a-zA-Z0-9_./-]+$",
+          "description": "Ruta a un recurso local publicable dentro de assets/."
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "title",
+        "kind",
+        "creators",
+        "accessedAt",
+        "language",
+        "description"
+      ],
+      "additionalProperties": false,
+      "title": "Source"
+    },
+    "Author": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Ruta al esquema local para autocompletado; opcional."
+        },
+        "schemaVersion": {
+          "const": "1.0",
+          "description": "Versión del contrato. Usa 1.0."
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 100,
+          "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Nombre público confirmado."
+        },
+        "bio": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Biografía breve y confirmada."
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^https?://[^\\s]+$",
+          "format": "uri",
+          "description": "URL HTTP(S) pública del recurso original."
+        }
+      },
+      "required": ["schemaVersion", "id", "name", "bio"],
+      "additionalProperties": false,
+      "title": "Author"
+    },
+    "Site": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Ruta al esquema local para autocompletado; opcional."
+        },
+        "schemaVersion": {
+          "const": "1.0",
+          "description": "Versión del contrato. Usa 1.0."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Nombre público confirmado."
+        },
+        "tagline": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Lema público de Colombia Clara."
+        },
+        "descriptor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Descripción institucional del proyecto."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Resumen fiel al contenido, sin introducir afirmaciones adicionales."
+        },
+        "navigation": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000,
+                "description": "Nombre legible que verá la persona usuaria."
+              },
+              "path": {
+                "type": "string",
+                "pattern": "^/[a-z/-]*$",
+                "description": "Ruta pública interna empezando por /."
+              }
+            },
+            "required": ["label", "path"],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "description": "Enlaces públicos de navegación, con etiqueta y ruta."
+        },
+        "contact": {
+          "type": "string",
+          "format": "email",
+          "description": "Correo confirmado; omitir si no existe un canal real."
+        }
+      },
+      "required": ["schemaVersion", "name", "tagline", "descriptor", "description", "navigation"],
+      "additionalProperties": false,
+      "title": "Site"
+    },
+    "Home": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Ruta al esquema local para autocompletado; opcional."
+        },
+        "schemaVersion": {
+          "const": "1.0",
+          "description": "Versión del contrato. Usa 1.0."
+        },
+        "eyebrow": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Etiqueta breve de contexto de la portada."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Título concreto y legible que describe el asunto o el componente."
+        },
+        "introduction": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Introducción breve editable para la portada."
+        },
+        "featured": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+            "maxLength": 100,
+            "description": "Identificador estable, en minúsculas y con guiones."
+          },
+          "maxItems": 5,
+          "uniqueItems": true,
+          "description": "IDs publicados para priorizar en portada; opcional."
+        }
+      },
+      "required": ["schemaVersion", "eyebrow", "title", "introduction"],
+      "additionalProperties": false,
+      "title": "Home"
+    },
+    "Sections": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000,
+          "description": "Ruta al esquema local para autocompletado; opcional."
+        },
+        "schemaVersion": {
+          "const": "1.0",
+          "description": "Versión del contrato. Usa 1.0."
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "enum": [
+                  "sin-mordaza",
+                  "datos-claros",
+                  "planeta-comun",
+                  "voces-claras",
+                  "escuela-clara"
+                ],
+                "description": "Identidad estable en minúsculas y guiones; no cambia al corregir títulos."
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000,
+                "description": "Nombre público confirmado."
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000,
+                "description": "Resumen fiel al contenido, sin introducir afirmaciones adicionales."
+              },
+              "question": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000,
+                "description": "Pregunta que orienta una línea editorial."
+              }
+            },
+            "required": ["id", "name", "description", "question"],
+            "additionalProperties": false
+          },
+          "minItems": 5,
+          "maxItems": 5,
+          "description": "Elementos ordenados del componente."
+        }
+      },
+      "required": ["schemaVersion", "items"],
+      "additionalProperties": false,
+      "title": "Sections"
+    }
+  }
+}

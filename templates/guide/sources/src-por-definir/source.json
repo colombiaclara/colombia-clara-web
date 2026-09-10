@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "id": "src-por-definir",
+  "title": "Fuente por completar antes de publicar",
+  "kind": "web-page",
+  "creators": [
+    {
+      "name": "Autoría de la fuente por completar"
+    }
+  ],
+  "accessedAt": "2000-01-01",
+  "language": "es",
+  "description": "Ficha de plantilla. Sustituye título, autoría, tipo y fecha de consulta por información comprobada. La fecha 2000-01-01 es un marcador, no una consulta real."
+}

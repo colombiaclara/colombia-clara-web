@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0",
+  "id": "page-nueva-pagina",
+  "slug": "nueva-pagina",
+  "status": "draft",
+  "title": "Título de la página",
+  "description": "Descripción de la página",
+  "blocks": [
+    {
+      "id": "proposito",
+      "type": "paragraph",
+      "evidence": "transition",
+      "content": "Escribe aquí el propósito de esta página."
+    }
+  ]
+}

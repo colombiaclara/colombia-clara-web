@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "id": "src-demo-recuento",
+  "title": "Recuento simulado de categorías",
+  "kind": "dataset",
+  "creators": [
+    {
+      "name": "Equipo de demostración"
+    }
+  ],
+  "accessedAt": "2026-09-09",
+  "language": "es",
+  "description": "Material ficticio para probar la navegación. No constituye una fuente periodística.",
+  "url": "https://example.org/datos-demostracion"
+}

@@ -1,0 +1,335 @@
+{
+  "schemaVersion": "1.0",
+  "status": "published",
+  "publishedAt": "2026-09-09",
+  "authors": ["autor-demo"],
+  "tags": ["demostracion", "comparaciones"],
+  "id": "pub-demo-catalogo",
+  "slug": "catalogo-de-graficos",
+  "section": "escuela-clara",
+  "type": "data-story",
+  "title": "Un gráfico para cada pregunta",
+  "description": "Catálogo local de doce visualizaciones con datos sintéticos, tablas y notas de método.",
+  "lead": {
+    "content": "Comparar, observar una evolución, describir una distribución. Este catálogo local permite explorar doce formas de representar datos. Todos los ejemplos son sintéticos."
+  },
+  "blocks": [
+    {
+      "id": "alcance-catalogo",
+      "type": "context",
+      "tone": "context",
+      "title": "Catálogo de demostración",
+      "content": "Todos los valores son sintéticos. Cada visualización incluye una tabla equivalente y su método."
+    },
+    {
+      "id": "seccion-bar",
+      "type": "heading",
+      "level": 2,
+      "content": "Barras"
+    },
+    {
+      "id": "grafico-bar",
+      "type": "chart",
+      "kind": "bar",
+      "title": "Barras",
+      "description": "Ejercicio con datos simulados. Consulta los valores exactos en la tabla.",
+      "dataset": "datasets/comparacion.json",
+      "encoding": {
+        "category": "categoria",
+        "value": "cantidad"
+      },
+      "options": {}
+    },
+    {
+      "id": "seccion-grouped-bar",
+      "type": "heading",
+      "level": 2,
+      "content": "Barras agrupadas"
+    },
+    {
+      "id": "grafico-grouped-bar",
+      "type": "chart",
+      "kind": "grouped-bar",
+      "title": "Barras agrupadas",
+      "description": "Ejercicio con datos simulados. Consulta los valores exactos en la tabla.",
+      "dataset": "datasets/series.json",
+      "encoding": {
+        "category": "categoria",
+        "series": ["primera", "segunda"]
+      },
+      "options": {
+        "seriesFilter": true
+      }
+    },
+    {
+      "id": "seccion-stacked-bar",
+      "type": "heading",
+      "level": 2,
+      "content": "Barras apiladas"
+    },
+    {
+      "id": "grafico-stacked-bar",
+      "type": "chart",
+      "kind": "stacked-bar",
+      "title": "Barras apiladas",
+      "description": "Ejercicio con datos simulados. Consulta los valores exactos en la tabla.",
+      "dataset": "datasets/series.json",
+      "encoding": {
+        "category": "categoria",
+        "series": ["primera", "segunda"]
+      },
+      "options": {}
+    },
+    {
+      "id": "seccion-stacked-bar-100",
+      "type": "heading",
+      "level": 2,
+      "content": "Composición al 100 %"
+    },
+    {
+      "id": "grafico-stacked-bar-100",
+      "type": "chart",
+      "kind": "stacked-bar-100",
+      "title": "Composición al 100 %",
+      "description": "Ejercicio con datos simulados. Consulta los valores exactos en la tabla.",
+      "dataset": "datasets/series.json",
+      "encoding": {
+        "category": "categoria",
+        "series": ["primera", "segunda"]
+      },
+      "options": {}
+    },
+    {
+      "id": "seccion-line",
+      "type": "heading",
+      "level": 2,
+      "content": "Evolución con datos ausentes"
+    },
+    {
+      "id": "grafico-line",
+      "type": "chart",
+      "kind": "line",
+      "title": "Evolución con datos ausentes",
+      "description": "Ejercicio con datos simulados. Consulta los valores exactos en la tabla.",
+      "dataset": "datasets/tiempo.json",
+      "encoding": {
+        "category": "fecha",
+        "series": ["primera", "segunda"]
+      },
+      "options": {
+        "seriesFilter": true,
+        "periodFilter": true
+      }
+    },
+    {
+      "id": "seccion-area",
+      "type": "heading",
+      "level": 2,
+      "content": "Área bajo cada serie"
+    },
+    {
+      "id": "grafico-area",
+      "type": "chart",
+      "kind": "area",
+      "title": "Área bajo cada serie",
+      "description": "Ejercicio con datos simulados. Consulta los valores exactos en la tabla.",
+      "dataset": "datasets/tiempo.json",
+      "encoding": {
+        "category": "fecha",
+        "series": ["primera", "segunda"]
+      },
+      "options": {}
+    },
+    {
+      "id": "seccion-pie",
+      "type": "heading",
+      "level": 2,
+      "content": "Partes de un total"
+    },
+    {
+      "id": "grafico-pie",
+      "type": "chart",
+      "kind": "pie",
+      "title": "Partes de un total",
+      "description": "Ejercicio con datos simulados. Consulta los valores exactos en la tabla.",
+      "dataset": "datasets/comparacion.json",
+      "encoding": {
+        "category": "categoria",
+        "value": "cantidad"
+      },
+      "options": {}
+    },
+    {
+      "id": "seccion-donut",
+      "type": "heading",
+      "level": 2,
+      "content": "Composición y total"
+    },
+    {
+      "id": "grafico-donut",
+      "type": "chart",
+      "kind": "donut",
+      "title": "Composición y total",
+      "description": "Ejercicio con datos simulados. Consulta los valores exactos en la tabla.",
+      "dataset": "datasets/comparacion.json",
+      "encoding": {
+        "category": "categoria",
+        "value": "cantidad"
+      },
+      "options": {}
+    },
+    {
+      "id": "seccion-scatter",
+      "type": "heading",
+      "level": 2,
+      "content": "Relación entre variables"
+    },
+    {
+      "id": "grafico-scatter",
+      "type": "chart",
+      "kind": "scatter",
+      "title": "Relación entre variables",
+      "description": "Ejercicio con datos simulados. Consulta los valores exactos en la tabla.",
+      "dataset": "datasets/puntos.json",
+      "encoding": {
+        "x": "x",
+        "y": "y"
+      },
+      "options": {}
+    },
+    {
+      "id": "seccion-histogram",
+      "type": "heading",
+      "level": 2,
+      "content": "Distribución de observaciones"
+    },
+    {
+      "id": "grafico-histogram",
+      "type": "chart",
+      "kind": "histogram",
+      "title": "Distribución de observaciones",
+      "description": "Ejercicio con datos simulados. Consulta los valores exactos en la tabla.",
+      "dataset": "datasets/puntos.json",
+      "encoding": {
+        "value": "y"
+      },
+      "options": {
+        "bins": 4
+      }
+    },
+    {
+      "id": "seccion-dumbbell",
+      "type": "heading",
+      "level": 2,
+      "content": "Comparación de dos momentos"
+    },
+    {
+      "id": "grafico-dumbbell",
+      "type": "chart",
+      "kind": "dumbbell",
+      "title": "Comparación de dos momentos",
+      "description": "Ejercicio con datos simulados. Consulta los valores exactos en la tabla.",
+      "dataset": "datasets/series.json",
+      "encoding": {
+        "category": "categoria",
+        "start": "primera",
+        "end": "segunda"
+      },
+      "options": {}
+    },
+    {
+      "id": "seccion-heatmap",
+      "type": "heading",
+      "level": 2,
+      "content": "Intensidad en una matriz"
+    },
+    {
+      "id": "grafico-heatmap",
+      "type": "chart",
+      "kind": "heatmap",
+      "title": "Intensidad en una matriz",
+      "description": "Ejercicio con datos simulados. Consulta los valores exactos en la tabla.",
+      "dataset": "datasets/matriz.json",
+      "encoding": {
+        "x": "periodo",
+        "y": "grupo",
+        "value": "valor"
+      },
+      "options": {}
+    },
+    {
+      "id": "indicador",
+      "type": "metric",
+      "title": "Variación de ejemplo",
+      "value": 150,
+      "unit": "unidades",
+      "period": "Momento final simulado",
+      "comparison": {
+        "value": 120,
+        "period": "Momento inicial simulado",
+        "kind": "relative"
+      },
+      "citations": [
+        {
+          "sourceId": "src-demo-recuento",
+          "locator": {
+            "type": "table",
+            "value": "Recuento simulado"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tabla-independiente",
+      "type": "table",
+      "title": "Tabla independiente",
+      "dataset": "datasets/comparacion.json"
+    },
+    {
+      "id": "cronologia",
+      "type": "timeline",
+      "title": "Secuencia ficticia del ejercicio",
+      "items": [
+        {
+          "date": "2026-09-08",
+          "title": "Preparar",
+          "content": "Elegir datos de prueba.",
+          "citations": [
+            {
+              "sourceId": "src-demo-recuento",
+              "locator": {
+                "type": "table",
+                "value": "Recuento simulado"
+              }
+            }
+          ]
+        },
+        {
+          "date": "2026-09-09",
+          "title": "Comparar",
+          "content": "Comprobar valores y tablas.",
+          "citations": [
+            {
+              "sourceId": "src-demo-recuento",
+              "locator": {
+                "type": "table",
+                "value": "Recuento simulado"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "muestra-imagen",
+      "type": "image",
+      "image": {
+        "src": "assets/muestra-de-color.png",
+        "alt": "Muestra uniforme del color institucional verde azulado",
+        "credit": "Colombia Clara · fixture de interfaz",
+        "caption": "Muestra de color para comprobar el componente de imagen; no es una fotografía documental.",
+        "license": "Recurso sintético de pruebas"
+      }
+    }
+  ]
+}

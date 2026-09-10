@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "1.0",
+  "id": "page-acerca",
+  "slug": "acerca",
+  "status": "published",
+  "title": "Información para comprender y actuar",
+  "description": "El propósito y las líneas editoriales de Colombia Clara.",
+  "publishedAt": "2026-09-09",
+  "blocks": [
+    {
+      "id": "proposito",
+      "type": "paragraph",
+      "evidence": "transition",
+      "content": "Colombia Clara nace con una propuesta: acercar los asuntos públicos a quienes quieren comprenderlos. Queremos hacer periodismo cívico que explique, investigue y abra caminos para comprobar lo publicado."
+    },
+    {
+      "id": "nuestra-propuesta",
+      "type": "heading",
+      "level": 2,
+      "content": "Claridad, diversidad y fuerza"
+    },
+    {
+      "id": "claridad",
+      "type": "paragraph",
+      "evidence": "transition",
+      "content": "Buscamos explicar sin simplificar en exceso. Dar contexto a una cifra, atribuir una declaración y reconocer lo que todavía no sabemos son parte de esa claridad."
+    },
+    {
+      "id": "diversidad",
+      "type": "paragraph",
+      "evidence": "transition",
+      "content": "Queremos escuchar experiencias de distintos territorios y comunidades. Nuestra propuesta combina investigación del poder, lectura de datos, ambiente, testimonios y aprendizaje."
+    },
+    {
+      "id": "compromisos",
+      "type": "context",
+      "tone": "context",
+      "title": "Una invitación a formar criterio",
+      "content": "Nuestra tarea es acercarte preguntas, evidencia y herramientas. Las conclusiones deben poder examinarse y discutirse a partir de lo publicado."
+    },
+    {
+      "id": "cinco-lineas",
+      "type": "heading",
+      "level": 2,
+      "content": "Cinco maneras de mirar Colombia"
+    },
+    {
+      "id": "lineas-editoriales",
+      "type": "list",
+      "items": [
+        {
+          "content": [
+            {
+              "type": "strong",
+              "content": "Sin Mordaza. "
+            },
+            {
+              "type": "text",
+              "content": "Investigamos el poder, las decisiones públicas y sus consecuencias."
+            }
+          ]
+        },
+        {
+          "content": [
+            {
+              "type": "strong",
+              "content": "Datos Claros. "
+            },
+            {
+              "type": "text",
+              "content": "Leemos las cifras con contexto, método y sus límites a la vista."
+            }
+          ]
+        },
+        {
+          "content": [
+            {
+              "type": "strong",
+              "content": "Planeta Común. "
+            },
+            {
+              "type": "text",
+              "content": "Ambiente, biodiversidad y clima desde los territorios."
+            }
+          ]
+        },
+        {
+          "content": [
+            {
+              "type": "strong",
+              "content": "Voces Claras. "
+            },
+            {
+              "type": "text",
+              "content": "Escuchamos experiencias y perspectivas de las comunidades."
+            }
+          ]
+        },
+        {
+          "content": [
+            {
+              "type": "strong",
+              "content": "Escuela Clara. "
+            },
+            {
+              "type": "text",
+              "content": "Herramientas para comprobar información y formar criterio."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

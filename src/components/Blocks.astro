@@ -1,0 +1,61 @@
+---
+import { StaticBlock } from '../lib/rendering/StaticBlock';
+import { ChartFrame } from '../lib/charts/ChartFrame';
+import { DataTable } from '../lib/charts/DataTable';
+import { Image } from '../lib/content/Image';
+import { SourceReference } from '../lib/sources/SourceReference';
+import { blockRegistry } from '../lib/rendering/registry';
+import type { ResolvedDocument } from '../build/types';
+import { model } from '../build/get-model';
+interface Props {
+  resolved: ResolvedDocument;
+}
+const { resolved: r } = Astro.props;
+const context = { base: model.base, sources: r.sources };
+---
+
+<div class="reading-body">
+  {
+    r.document.blocks.map((block) => (
+      <div
+        id={block.id}
+        class:list={[
+          'content-block',
+          {
+            'wide-block':
+              block.width === 'wide' || block.type === 'chart' || block.type === 'table',
+          },
+        ]}
+        data-block={block.type}
+        data-render={blockRegistry[block.type].render}
+      >
+        {block.type === 'chart' ? (
+          <ChartFrame
+            block={block}
+            dataset={r.datasets[block.dataset]}
+            datasetUrl={r.datasetUrls[block.dataset]}
+            context={context}
+            client:visible={{ rootMargin: '200px' }}
+          />
+        ) : block.type === 'table' ? (
+          <section>
+            <DataTable
+              title={block.title}
+              columns={r.datasets[block.dataset].columns}
+              rows={r.datasets[block.dataset].rows}
+            />
+            <p>{r.datasets[block.dataset].methodology}</p>
+            <SourceReference citations={r.datasets[block.dataset].citations} context={context} />
+            <a class="small" href={r.datasetUrls[block.dataset]} download>
+              Descargar dataset (JSON)
+            </a>
+          </section>
+        ) : block.type === 'image' ? (
+          <Image image={r.images[block.image.src]} />
+        ) : (
+          <StaticBlock block={block} context={context} />
+        )}
+      </div>
+    ))
+  }
+</div>

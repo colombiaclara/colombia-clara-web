@@ -1,0 +1,180 @@
+{
+  "schemaVersion": "1.0",
+  "status": "published",
+  "publishedAt": "2026-09-09",
+  "authors": ["autor-demo"],
+  "tags": ["demostracion", "comparaciones"],
+  "id": "pub-demo-comparacion",
+  "slug": "leer-una-comparacion",
+  "section": "datos-claros",
+  "type": "guide",
+  "title": "Dos cifras no cuentan toda la historia",
+  "description": "Un ejercicio con datos simulados para leer diferencias, bases de comparación y límites.",
+  "lead": {
+    "content": "La categoría B tiene más unidades que la A. Pero una diferencia absoluta y una variación porcentual responden preguntas distintas. Este ejercicio, construido con datos simulados, muestra cómo leerlas y cómo volver a la fuente.",
+    "citations": [
+      {
+        "sourceId": "src-demo-recuento",
+        "locator": {
+          "type": "table",
+          "value": "Recuento simulado"
+        }
+      }
+    ]
+  },
+  "keyPoints": [
+    {
+      "content": "B supera a A en 30 unidades.",
+      "citations": [
+        {
+          "sourceId": "src-demo-recuento",
+          "locator": {
+            "type": "table",
+            "value": "Recuento simulado"
+          }
+        }
+      ]
+    },
+    {
+      "content": "Tomando A como base, la variación es del 25 %.",
+      "citations": [
+        {
+          "sourceId": "src-demo-recuento",
+          "locator": {
+            "type": "table",
+            "value": "Recuento simulado"
+          }
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "id": "pregunta-comparacion",
+      "type": "heading",
+      "level": 2,
+      "content": "¿Más que qué, y respecto de cuánto?"
+    },
+    {
+      "id": "explicacion",
+      "type": "paragraph",
+      "evidence": "analysis",
+      "content": [
+        {
+          "type": "text",
+          "content": "La categoría A registra 120 unidades y la B, 150. La diferencia es "
+        },
+        {
+          "type": "strong",
+          "content": "30 unidades"
+        },
+        {
+          "type": "text",
+          "content": ". Para expresar esa diferencia como proporción, primero debemos elegir una base."
+        },
+        {
+          "type": "citation",
+          "citation": {
+            "sourceId": "src-demo-recuento",
+            "locator": {
+              "type": "table",
+              "value": "Recuento simulado"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "comparacion-categorias",
+      "type": "chart",
+      "kind": "bar",
+      "title": "Una diferencia de 30 unidades",
+      "description": "Recuento sintético: 120 unidades en A y 150 en B.",
+      "dataset": "datasets/comparacion.json",
+      "encoding": {
+        "category": "categoria",
+        "value": "cantidad"
+      },
+      "options": {
+        "orientation": "horizontal"
+      }
+    },
+    {
+      "id": "base-elegida",
+      "type": "paragraph",
+      "evidence": "analysis",
+      "content": "Si tomamos las 120 unidades de A como base, 30 / 120 × 100 = 25 %. Si invertimos la comparación y tomamos B como base, la reducción es 30 / 150 × 100 = 20 %. La base importa.",
+      "citations": [
+        {
+          "sourceId": "src-demo-recuento",
+          "locator": {
+            "type": "table",
+            "value": "Recuento simulado"
+          }
+        }
+      ]
+    },
+    {
+      "id": "recordatorio",
+      "type": "context",
+      "tone": "uncertainty",
+      "title": "Qué no se puede concluir",
+      "content": "Estas categorías son ficticias. Sus cifras no describen un territorio, una población ni un resultado real de Colombia."
+    },
+    {
+      "id": "procedencia",
+      "type": "heading",
+      "level": 2,
+      "content": "Seguir el rastro de una cifra"
+    },
+    {
+      "id": "pasos",
+      "type": "list",
+      "ordered": true,
+      "items": [
+        {
+          "content": "Comprueba la unidad y el periodo antes de comparar."
+        },
+        {
+          "content": "Identifica la cifra usada como base."
+        },
+        {
+          "content": "Abre la fuente y busca la tabla o el apartado citado."
+        }
+      ]
+    },
+    {
+      "id": "nota-voz",
+      "type": "quote",
+      "content": "Una buena comparación empieza por explicar su base.",
+      "attribution": "Frase ficticia del ejercicio",
+      "citations": [
+        {
+          "sourceId": "src-demo-metodo"
+        }
+      ]
+    },
+    {
+      "id": "metodo-ejercicio",
+      "type": "methodology",
+      "title": "Cómo se preparó este ejemplo",
+      "content": "Se eligieron dos valores sintéticos para demostrar operaciones aritméticas sencillas. No hubo observación, muestreo ni extrapolación.",
+      "citations": [
+        {
+          "sourceId": "src-demo-recuento",
+          "locator": {
+            "type": "table",
+            "value": "Recuento simulado"
+          }
+        }
+      ]
+    }
+  ],
+  "corrections": [
+    {
+      "date": "2026-09-09",
+      "description": "Ejemplo de nota de corrección: se hace explícita la base del cálculo. No describe una corrección periodística real.",
+      "blocks": ["base-elegida"]
+    }
+  ]
+}

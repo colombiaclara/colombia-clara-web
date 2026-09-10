@@ -1,0 +1,120 @@
+---
+import Layout from '../components/Layout.astro';
+import { model } from '../build/get-model';
+import { PublicationSummary } from '../lib/publications/PublicationSummary';
+import type { Publication } from '../generated/content';
+const selected =
+  model.home.featured
+    ?.map((id) => model.publications.find((r) => r.document.id === id)!)
+    .filter(Boolean) ?? [];
+const ordered = selected.length
+  ? [...selected, ...model.publications.filter((r) => !selected.includes(r))]
+  : model.publications;
+---
+
+<Layout title="Colombia Clara"
+  ><section class:list={['home-intro', { 'with-publications': ordered.length > 0 }]}>
+    <div>
+      <p class="kicker"><span class="section-mark"></span>{model.home.eyebrow}</p><h1>
+        {model.home.title}
+      </h1>
+    </div><p class="home-description">{model.home.introduction}</p>
+  </section>
+  {
+    ordered.length > 0 ? (
+      <section class="home-news">
+        <>
+          <div class="section-heading">
+            <>
+              <h2>En portada</h2>
+              <a href={model.base + 'publicaciones/'}>
+                Todas las publicaciones <span aria-hidden="true">↗</span>
+              </a>
+            </>
+          </div>
+          <div class="frontpage-grid">
+            {ordered.slice(0, 4).map((r, i) => (
+              <PublicationSummary
+                publication={r.document as Publication}
+                base={model.base}
+                featured={i === 0}
+              />
+            ))}
+          </div>
+        </>
+      </section>
+    ) : (
+      <section class="opening-note">
+        <>
+          <span class="opening-number" aria-hidden="true">
+            01 /
+          </span>
+          <div>
+            <>
+              <p class="kicker">UN PROYECTO QUE COMIENZA</p>
+              <h2>Las preguntas abren el camino.</h2>
+              <p>
+                Estamos preparando nuestras primeras publicaciones. Mientras tanto, conoce las
+                preguntas que nos guían y cómo nos proponemos trabajar con la evidencia.
+              </p>
+              <a class="text-link" href={model.base + 'metodologia/'}>
+                Conoce nuestro método <span aria-hidden="true">↗</span>
+              </a>
+            </>
+          </div>
+          <aside>
+            <>
+              <span class="evidence-rule" />
+              <p>
+                Entender el asunto.
+                <br />
+                Explorar la evidencia.
+                <>
+                  <br />
+                  <strong>Comprobar las fuentes.</strong>
+                </>
+              </p>
+            </>
+          </aside>
+        </>
+      </section>
+    )
+  }
+  <section class="editorial-lines">
+    <div class="section-heading">
+      <h2>Cinco maneras de mirar</h2><span class="small">Nuestras líneas editoriales</span>
+    </div><div class="lines-grid">
+      {
+        model.sections.items.map((s, i) => (
+          <article class="line-item" data-section={s.id}>
+            <>
+              <span class="line-number">0{i + 1}</span>
+              <h3>
+                <a href={`${model.base}lineas/${s.id}/`}>{s.name}</a>
+              </h3>
+              <p>{s.description}</p>
+              <a class="line-question" href={`${model.base}lineas/${s.id}/`}>
+                {s.question}
+                <span aria-hidden="true">↗</span>
+              </a>
+            </>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+  <section class="evidence-entry">
+    <div>
+      <p class="kicker">COMPRUEBA LO PUBLICADO</p><h2>
+        La fuente también<br />es parte de la historia.
+      </h2>
+    </div><div>
+      <p>
+        Las referencias te llevan al documento concreto. Desde cada fuente podrás encontrar las
+        publicaciones que la utilizan y volver al punto de la lectura donde se cita.
+      </p><a class="button" href={model.base + 'fuentes/'}
+        >Explorar las fuentes <span aria-hidden="true">↗</span></a
+      >
+    </div>
+  </section></Layout
+>

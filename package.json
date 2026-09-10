@@ -1,0 +1,63 @@
+{
+  "name": "colombia-clara-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0 <25"
+  },
+  "scripts": {
+    "dev": "node scripts/run.mjs dev",
+    "dev:demo": "node scripts/run.mjs demo",
+    "content:new": "node scripts/content-new.mjs",
+    "generate:types": "node scripts/generate-types.mjs",
+    "validate:content": "node --import tsx scripts/validate.ts",
+    "validate:templates": "node --import tsx scripts/validate-templates.ts",
+    "typecheck": "node --import tsx scripts/prepare.ts && astro sync && astro check && tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "check:component-tests": "node scripts/check-component-tests.mjs",
+    "build": "node scripts/run.mjs build",
+    "build:demo": "node scripts/run.mjs build-demo",
+    "preview": "node scripts/serve.mjs dist",
+    "check:dist": "node --import tsx scripts/check-dist.ts",
+    "check": "npm run generate:types && npm run validate:content && npm run validate:templates && npm run typecheck && npm run check:component-tests && npm test",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "astro": "7.3.2",
+    "@astrojs/react": "6.0.5",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "d3-array": "^3.2.4",
+    "d3-scale": "^4.0.2",
+    "d3-shape": "^3.2.0",
+    "sharp": "^0.34.3",
+    "@fontsource/source-serif-4": "^5.2.8",
+    "@fontsource/source-sans-3": "^5.2.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "typescript": "^5.9.3",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@types/node": "^24.0.0",
+    "@types/d3-array": "^3.2.2",
+    "@types/d3-scale": "^4.0.9",
+    "@types/d3-shape": "^3.1.7",
+    "vitest": "^3.2.4",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/user-event": "^14.6.1",
+    "jsdom": "^26.1.0",
+    "@playwright/test": "^1.55.0",
+    "@axe-core/playwright": "^4.10.2",
+    "json-schema-to-typescript": "^15.0.4",
+    "tsx": "^4.20.5",
+    "cheerio": "^1.1.2",
+    "prettier": "^3.6.2",
+    "prettier-plugin-astro": "^0.14.1"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "./editorial.schema.json#/$defs/Sections",
+  "title": "Sections",
+  "description": "Contrato de Sections; definición canónica en editorial.schema.json."
+}

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0",
+  "id": "series",
+  "title": "Series simuladas",
+  "columns": [
+    {
+      "id": "categoria",
+      "label": "Categoría",
+      "type": "string"
+    },
+    {
+      "id": "primera",
+      "label": "Primera",
+      "type": "number",
+      "unit": "unidades"
+    },
+    {
+      "id": "segunda",
+      "label": "Segunda",
+      "type": "number",
+      "unit": "unidades"
+    }
+  ],
+  "rows": [
+    {
+      "categoria": "Grupo A",
+      "primera": 40,
+      "segunda": 60
+    },
+    {
+      "categoria": "Grupo B",
+      "primera": 70,
+      "segunda": 30
+    },
+    {
+      "categoria": "Grupo C",
+      "primera": 20,
+      "segunda": null
+    }
+  ],
+  "citations": [
+    {
+      "sourceId": "src-demo-recuento",
+      "locator": {
+        "type": "table",
+        "value": "Recuento simulado"
+      }
+    }
+  ],
+  "methodology": "Categorías y series sintéticas con unidades comparables, creadas para probar agrupación y composición. No describen poblaciones observadas.",
+  "period": "Ejercicio sin periodo real"
+}

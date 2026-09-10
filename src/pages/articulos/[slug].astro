@@ -1,0 +1,130 @@
+---
+import Layout from '../../components/Layout.astro';
+import Blocks from '../../components/Blocks.astro';
+import { model } from '../../build/get-model';
+import { PublicationHeader } from '../../lib/publications/PublicationHeader';
+import { KeyPoints } from '../../lib/publications/KeyPoints';
+import { Image } from '../../lib/content/Image';
+import { SourceCard } from '../../lib/sources/SourceCard';
+import { Corrections } from '../../lib/content/Corrections';
+import { RelatedPublications } from '../../lib/publications/RelatedPublications';
+import { Breadcrumbs } from '../../lib/layout/Breadcrumbs';
+import { Share } from '../../lib/ui/Share';
+import type { Publication } from '../../generated/content';
+export function getStaticPaths() {
+  return model.publications.flatMap((r) => [
+    { params: { slug: r.document.slug }, props: { resolved: r } },
+    ...(r.document.previousSlugs ?? []).map((slug) => ({
+      params: { slug },
+      props: { resolved: r, redirect: true },
+    })),
+  ]);
+}
+const { resolved: r, redirect } = Astro.props;
+const p = r.document as Publication;
+const context = { base: model.base, sources: r.sources };
+const headings = p.blocks.filter((b) => b.type === 'heading');
+const url = new URL(r.url, model.origin).href;
+---
+
+{
+  redirect ? (
+    <html lang="es">
+      <>
+        <head>
+          <>
+            <meta http-equiv="refresh" content={`0;url=${r.url}`} />
+            <link rel="canonical" href={url} />
+            <title>Publicación trasladada</title>
+          </>
+        </head>
+        <body>
+          <a href={r.url}>Continuar a {p.title}</a>
+        </body>
+      </>
+    </html>
+  ) : (
+    <Layout
+      title={p.title}
+      description={p.description}
+      article={{ id: p.id, publishedAt: p.publishedAt, updatedAt: p.updatedAt, authors: r.authors }}
+      noindex={p.status === 'draft'}
+    >
+      <Breadcrumbs
+        items={[
+          { label: 'Inicio', href: model.base },
+          { label: 'Publicaciones', href: model.base + 'publicaciones/' },
+          { label: p.title },
+        ]}
+      />
+      {p.status === 'draft' && (
+        <div class="draft-banner">BORRADOR · Solo visible en desarrollo.</div>
+      )}
+      <article class="article-page">
+        <PublicationHeader
+          publication={p}
+          authors={r.authors}
+          minutes={r.readingMinutes}
+          context={context}
+        />
+        {p.cover && <Image image={r.images[p.cover.src]} priority />}
+        <div class="article-reading">
+          <>
+            <aside class="article-rail">
+              <span class="kicker">EN ESTA LECTURA</span>
+              {headings.length >= 3 && (
+                <details open class="toc">
+                  <summary>Índice de lectura</summary>
+                  <nav aria-label="Índice del artículo">
+                    {headings.map((h) => (
+                      <a href={'#' + h.id}>{h.content}</a>
+                    ))}
+                  </nav>
+                </details>
+              )}
+              <a class="rail-source-link" href="#fuentes">
+                {Object.keys(r.sources).length} fuentes
+              </a>
+            </aside>
+            <div class="article-content">
+              {p.keyPoints && <KeyPoints items={p.keyPoints} context={context} />}
+              <Blocks resolved={r} />
+              <>
+                <Corrections items={p.corrections ?? []} />
+                <Share title={p.title} url={url} client:idle />
+              </>
+            </div>
+          </>
+        </div>
+      </article>
+      <section id="fuentes" class="article-sources">
+        <>
+          <div class="section-heading">
+            <>
+              <h2>Las fuentes de esta publicación</h2>
+              <span class="small">Evidencia para revisar</span>
+            </>
+          </div>
+          <div class="source-grid">
+            {Object.values(r.sources).map((s) => (
+              <SourceCard
+                source={s}
+                base={model.base}
+                count={model.uses[s.id].filter((u) => !u.institutional).length}
+              />
+            ))}
+          </div>
+        </>
+      </section>
+      <RelatedPublications
+        publications={model.publications
+          .filter(
+            (r) =>
+              p.id !== r.document.id && Astro.props.resolved.relatedIds.includes(r.document.id),
+          )
+          .map((r) => r.document as Publication)}
+        base={model.base}
+      />
+    </Layout>
+  )
+}

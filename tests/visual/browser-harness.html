@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="es">
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Revisión local · Colombia Clara</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #edf2f2;
+      color: #182529;
+      font: 15px system-ui;
+    }
+    header {
+      padding: 16px;
+      position: sticky;
+      top: 0;
+      background: white;
+      border-bottom: 1px solid #ccd6d6;
+      z-index: 2;
+    }
+    h1 {
+      font-size: 20px;
+      margin: 0 0 12px;
+    }
+    .controls {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    select,
+    button {
+      font: inherit;
+      padding: 8px;
+    }
+    label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #stage {
+      padding: 24px;
+      overflow: auto;
+    }
+    iframe {
+      display: block;
+      margin: auto;
+      border: 1px solid #bac9c9;
+      background: white;
+      height: 900px;
+    }
+    output {
+      display: block;
+      white-space: pre-wrap;
+      font: 13px ui-monospace;
+      background: #fff;
+      padding: 12px;
+      margin: 0 16px 16px;
+    }
+    summary {
+      padding: 10px 16px;
+      cursor: pointer;
+    }
+  </style>
+  <header>
+    <h1>Revisión local de Colombia Clara — contenido sintético solo en las muestras</h1>
+    <div class="controls">
+      <label
+        >Página
+        <select id="route">
+          <option value="production/">Portada de producción</option>
+          <option value="fixtures/">Portada de muestra</option>
+          <option value="fixtures/articulos/leer-una-comparacion/">Lectura de muestra</option>
+          <option value="fixtures/fuentes/src-demo-recuento/">Fuente de muestra</option>
+          <option value="fixtures/publicaciones/">Búsqueda de muestra</option>
+          <option value="fixtures/articulos/catalogo-de-graficos/">Doce gráficos de muestra</option>
+        </select></label
+      >
+      <label
+        >Ancho
+        <select id="width">
+          <option>320</option>
+          <option selected>390</option>
+          <option>768</option>
+          <option>1024</option>
+          <option>1440</option>
+        </select></label
+      >
+      <label><input type="checkbox" id="textsize" />Texto al 200 %</label
+      ><label><input type="checkbox" id="nojs" />Sin JavaScript</label>
+      <button id="review">Revisar estado visible</button
+      ><button id="reload">Cargar de nuevo</button>
+    </div>
+  </header>
+  <details>
+    <summary>Informe de esta revisión</summary>
+    <output id="report">Cargando…</output>
+  </details>
+  <div id="stage"></div>
+  <script src="axe.min.js"></script>
+  <script>
+    const route = document.querySelector('#route'),
+      width = document.querySelector('#width'),
+      textsize = document.querySelector('#textsize'),
+      nojs = document.querySelector('#nojs'),
+      stage = document.querySelector('#stage'),
+      report = document.querySelector('#report');
+    let frame, metrics;
+    function mount() {
+      frame = document.createElement('iframe');
+      frame.id = 'site-preview';
+      frame.title = 'Sitio en revisión';
+      frame.style.width = Number(width.value) + 2 + 'px';
+      if (nojs.checked) frame.setAttribute('sandbox', 'allow-same-origin');
+      frame.src = route.value;
+      stage.replaceChildren(frame);
+      frame.addEventListener('load', () => {
+        applySize();
+        metrics = {
+          observedAt: new Date().toISOString(),
+          requestedWidth: Number(width.value),
+          withoutJavaScript: nojs.checked,
+        };
+        report.textContent =
+          'Página cargada. Pulsa Revisar estado visible para medir la página actual.';
+      });
+    }
+    function applySize() {
+      frame.style.width = Number(width.value) + 2 + 'px';
+      const d = frame.contentDocument;
+      if (d?.documentElement) d.documentElement.style.fontSize = textsize.checked ? '200%' : '';
+    }
+    async function review() {
+      report.textContent = 'Evaluando…';
+      const d = frame.contentDocument,
+        w = frame.contentWindow;
+      await d.fonts.ready;
+      const nav = w.performance.getEntriesByType('navigation'),
+        resources = w.performance
+          .getEntriesByType('resource')
+          .filter((r) => !r.name.endsWith('/__qa/axe.min.js'));
+      const assets = [...nav, ...resources].map((r) => ({
+        name: r.name,
+        type: r.initiatorType,
+        transferSize: r.transferSize,
+        encodedBodySize: r.encodedBodySize,
+        decodedBodySize: r.decodedBodySize,
+      }));
+      if (!nojs.checked && !w.axe)
+        await new Promise((resolve, reject) => {
+          const audit = d.createElement('script');
+          audit.src = new URL('axe.min.js', location.href).href;
+          audit.onload = resolve;
+          audit.onerror = reject;
+          d.head.appendChild(audit);
+        });
+      const results = nojs.checked
+        ? {
+            violations: [],
+            incomplete: [{ id: 'auditoria-sin-javascript-no-ejecutada', nodes: [] }],
+          }
+        : await w.axe.run(d, {
+            runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'] },
+          });
+      const data = {
+        ...metrics,
+        url: w.location.href,
+        title: d.title,
+        width: w.innerWidth,
+        documentWidth: d.documentElement.scrollWidth,
+        overflow: d.documentElement.scrollWidth > w.innerWidth,
+        textScale: textsize.checked ? 2 : 1,
+        fonts: d.fonts.status,
+        transferredBytes: assets.reduce((n, r) => n + r.transferSize, 0),
+        encodedBytes: assets.reduce((n, r) => n + r.encodedBodySize, 0),
+        resourceCount: assets.length,
+        axeViolations: results.violations.map((v) => ({
+          id: v.id,
+          impact: v.impact,
+          description: v.description,
+          nodes: v.nodes.map((n) => ({ target: n.target, summary: n.failureSummary })),
+        })),
+        axeIncomplete: results.incomplete.map((v) => ({ id: v.id, nodes: v.nodes.length })),
+        assets,
+      };
+      report.textContent = JSON.stringify(data, null, 2);
+      document.querySelector('details').open = true;
+    }
+    route.addEventListener('change', mount);
+    nojs.addEventListener('change', mount);
+    width.addEventListener('change', applySize);
+    textsize.addEventListener('change', applySize);
+    document
+      .querySelector('#review')
+      .addEventListener('click', () => review().catch((e) => (report.textContent = e.stack)));
+    document.querySelector('#reload').addEventListener('click', mount);
+    mount();
+  </script>
+</html>

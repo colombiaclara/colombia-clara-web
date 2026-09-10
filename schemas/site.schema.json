@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "./editorial.schema.json#/$defs/Site",
+  "title": "Site",
+  "description": "Contrato de Site; definición canónica en editorial.schema.json."
+}

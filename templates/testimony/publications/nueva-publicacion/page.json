@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0",
+  "status": "draft",
+  "authors": ["autor-por-definir"],
+  "tags": [],
+  "id": "pub-nueva-publicacion",
+  "slug": "nueva-publicacion",
+  "section": "datos-claros",
+  "type": "testimony",
+  "title": "Título de la nueva publicación",
+  "description": "Resume el contenido que vas a desarrollar.",
+  "lead": {
+    "content": "Escribe aquí la entradilla y añade referencias para las afirmaciones factuales."
+  },
+  "blocks": [
+    {
+      "id": "voz-contexto",
+      "type": "heading",
+      "level": 2,
+      "content": "Quién habla y desde dónde"
+    },
+    {
+      "id": "presentacion-voz",
+      "type": "paragraph",
+      "evidence": "fact",
+      "content": "Presenta a la persona, el contexto y la forma en que se obtuvo su testimonio.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    },
+    {
+      "id": "experiencia",
+      "type": "heading",
+      "level": 2,
+      "content": "La experiencia narrada"
+    },
+    {
+      "id": "declaracion-persona",
+      "type": "paragraph",
+      "evidence": "declaration",
+      "content": "Transcribe o parafrasea el testimonio con atribución y localizador. Sustituye este texto; no es una declaración real.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    },
+    {
+      "id": "contexto-contrastado",
+      "type": "heading",
+      "level": 2,
+      "content": "Lo que aporta el contraste"
+    },
+    {
+      "id": "contraste-testimonio",
+      "type": "paragraph",
+      "evidence": "analysis",
+      "content": "Distingue la experiencia personal de los hechos comprobados.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    },
+    {
+      "id": "metodo-editorial",
+      "type": "methodology",
+      "title": "Cómo se elaboró esta publicación",
+      "content": "Explica entrevista, consentimiento, edición del testimonio y posibles reservas de identidad sin exponer datos sensibles.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    }
+  ]
+}

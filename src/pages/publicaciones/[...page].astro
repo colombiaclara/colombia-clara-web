@@ -1,0 +1,65 @@
+---
+import Layout from '../../components/Layout.astro';
+import { model } from '../../build/get-model';
+import { Search } from '../../lib/search/Search';
+import { PublicationSummary } from '../../lib/publications/PublicationSummary';
+import { EmptyState } from '../../lib/ui/EmptyState';
+import { Pagination } from '../../lib/layout/Pagination';
+import { Breadcrumbs } from '../../lib/layout/Breadcrumbs';
+import type { Publication } from '../../generated/content';
+
+export function getStaticPaths() {
+  const count = model.publications.length;
+  const pages = Math.max(1, Math.ceil(count / 8));
+  const result = [];
+  for (let i = 1; i <= pages; i++) {
+    const page = i === 1 ? undefined : 'pagina/' + i;
+    result.push({ params: { page }, props: { currentPage: i, pages } });
+  }
+  return result;
+}
+const { currentPage, pages } = Astro.props;
+const all = model.publications;
+const rows = all.slice((currentPage - 1) * 8, currentPage * 8);
+const links = Array.from({ length: pages }, (_, i) => ({
+  label: String(i + 1),
+  href: model.base + 'publicaciones/' + (i === 0 ? '' : 'pagina/' + (i + 1) + '/'),
+}));
+---
+
+<Layout
+  title="Preguntas, historias y evidencia"
+  description="Explora las publicaciones por tema, línea editorial o tipo de pieza."
+  ><Breadcrumbs
+    items={[{ label: 'Inicio', href: model.base }, { label: 'Publicaciones' }]}
+  /><header class="listing-header">
+    <p class="kicker">Publicaciones</p><h1>Preguntas, historias y evidencia</h1><p class="lead">
+      Explora las publicaciones por tema, línea editorial o tipo de pieza.
+    </p>
+  </header><section class="search-container">
+    <Search
+      indexUrl={model.base + 'search/publications.json'}
+      kind="publications"
+      client:load
+    /><noscript
+      ><p>
+        La búsqueda interactiva requiere JavaScript. Puedes recorrer este índice y abrir cada ficha.
+      </p></noscript
+    ><div class="static-index">
+      {
+        rows.length ? (
+          <div class="publication-grid">
+            {rows.map((r) => (
+              <PublicationSummary publication={r.document as Publication} base={model.base} />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="Estamos preparando las primeras historias"
+            description="Las primeras publicaciones aparecerán aquí después de su revisión editorial."
+          />
+        )
+      }<Pagination page={currentPage} pages={pages} links={links} />
+    </div>
+  </section></Layout
+>

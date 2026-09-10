@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "./editorial.schema.json#/$defs/Home",
+  "title": "Home",
+  "description": "Contrato de Home; definición canónica en editorial.schema.json."
+}

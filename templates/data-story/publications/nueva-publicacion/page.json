@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "1.0",
+  "status": "draft",
+  "authors": ["autor-por-definir"],
+  "tags": [],
+  "id": "pub-nueva-publicacion",
+  "slug": "nueva-publicacion",
+  "section": "datos-claros",
+  "type": "data-story",
+  "title": "Título de la nueva publicación",
+  "description": "Resume el contenido que vas a desarrollar.",
+  "lead": {
+    "content": "Escribe aquí la entradilla y añade referencias para las afirmaciones factuales."
+  },
+  "blocks": [
+    {
+      "id": "pregunta-datos",
+      "type": "heading",
+      "level": 2,
+      "content": "La pregunta que hacemos a los datos"
+    },
+    {
+      "id": "alcance",
+      "type": "paragraph",
+      "evidence": "transition",
+      "content": "Define la unidad, el periodo, el territorio y la población observada."
+    },
+    {
+      "id": "comparacion-principal",
+      "type": "chart",
+      "kind": "bar",
+      "title": "Título que describe el hallazgo",
+      "description": "Describe qué representa el gráfico y sus límites. Completa el dataset antes de publicar.",
+      "dataset": "datasets/datos.json",
+      "encoding": {
+        "category": "categoria",
+        "value": "valor"
+      },
+      "options": {
+        "orientation": "horizontal"
+      }
+    },
+    {
+      "id": "lectura-datos",
+      "type": "heading",
+      "level": 2,
+      "content": "Cómo leer el resultado"
+    },
+    {
+      "id": "interpretacion",
+      "type": "paragraph",
+      "evidence": "analysis",
+      "content": "Interpreta el resultado sin confundir asociación y causalidad.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    },
+    {
+      "id": "metodo-editorial",
+      "type": "methodology",
+      "title": "Cómo se elaboró esta publicación",
+      "content": "Describe origen, limpieza, cálculos, exclusiones y limitaciones. Usa null para ausencia y 0 solo para cero observado.",
+      "citations": [
+        {
+          "sourceId": "src-por-definir"
+        }
+      ]
+    }
+  ]
+}

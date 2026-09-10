@@ -1,0 +1,8 @@
+node_modules
+dist
+dist-demo
+.generated
+.astro
+.qa
+package-lock.json
+src/generated
